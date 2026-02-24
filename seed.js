@@ -104,7 +104,7 @@ const seedData = async () => {
                 title: 'Log Generator',
                 description: 'A Python-based log generator designed to simulate realistic security events for testing SIEM and log analysis tools.',
                 icon: 'fas fa-code',
-                githubUrl: 'https://github.com/Vasu14-21/log_generator'
+                githubUrl: 'https://github.com/Vasu-soc/log_generator'
             },
             {
                 type: 'big',
