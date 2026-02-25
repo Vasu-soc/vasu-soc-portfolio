@@ -404,7 +404,6 @@ function closeCaseModal() {
 }
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCaseModal(); });
 
-
 // ─── CONTACT FORM ──────────────────────────────────────────────
 async function submitForm(e) {
   e.preventDefault();
@@ -412,41 +411,241 @@ async function submitForm(e) {
   const btn = document.getElementById('submit-btn');
   const originalBtnText = btn.innerHTML;
 
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  // Initialize EmailJS
+  try {
+    emailjs.init("firKmCUDMKwaYV2cJ");
+  } catch (e) {
+    console.error("EmailJS init failed");
+  }
+
+  // Basic validation check
+  const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+  let allFilled = true;
+  inputs.forEach(input => {
+    if (!input.value.trim()) allFilled = false;
+  });
+
+  if (!allFilled) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Dispatching...';
   btn.disabled = true;
 
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
+  data.date = new Date().toISOString();
 
   try {
-    const response = await fetch('http://localhost:5000/api/contact', {
+    // 1. Save to LocalStorage (Always works for Dashboard)
+    const localMsgs = JSON.parse(localStorage.getItem('sent_messages') || '[]');
+    localMsgs.unshift(data);
+    localStorage.setItem('sent_messages', JSON.stringify(localMsgs));
+
+    // 2. Send Real Email via EmailJS
+    try {
+      const serviceID = 'service_default';
+      const templateID = 'template_portfolio';
+      await emailjs.sendForm(serviceID, templateID, form);
+      console.log("Email sent successfully!");
+    } catch (mailErr) {
+      console.warn('Email service sync unavailable, logged locally.');
+    }
+
+    // 3. Attempt Backend Sync
+    try {
+      await fetch('http://localhost:5000/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (err) {
+      console.warn('Backend offline, sync pending.');
+    }
+
+    // Success UI
+    document.getElementById('contactForm').style.display = 'none';
+    const successDiv = document.getElementById('formSuccess');
+    successDiv.style.display = 'block';
+
+    const successTitle = successDiv.querySelector('h3');
+    const successText = successDiv.querySelector('p');
+
+    successTitle.textContent = "Message sent Successfully";
+    successText.textContent = "I will receive your email and respond shortly.";
+
+    createTouchRipple(successDiv.querySelector('.success-bubble'));
+
+  } catch (error) {
+    console.error('Submission error:', error);
+    btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Failed';
+    btn.disabled = false;
+    setTimeout(() => { btn.innerHTML = originalBtnText; }, 3000);
+  }
+}
+
+
+// ─── MESSAGES MODAL LOGIC ──────────────────────────────────────
+const messagesModal = document.getElementById('messagesModal');
+const messagesList = document.getElementById('messagesList');
+let isAdminAuthenticated = false;
+
+async function openMessagesModal() {
+  messagesModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  if (!isAdminAuthenticated) {
+    document.getElementById('adminLoginView').style.display = 'block';
+    document.getElementById('adminMessagesView').style.display = 'none';
+    document.getElementById('portalSub').textContent = "Identity verification required to view logs.";
+  } else {
+    document.getElementById('adminLoginView').style.display = 'none';
+    document.getElementById('adminMessagesView').style.display = 'block';
+    document.getElementById('portalSub').textContent = "Reviewing all messages sent via the portfolio.";
+    await fetchMessages();
+  }
+}
+
+async function handleAdminLogin(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('adminEmail').value.trim();
+  const passwordInput = document.getElementById('adminPassword').value.trim();
+  const loginBtn = document.getElementById('loginBtn');
+  const errorMsg = document.getElementById('loginError');
+
+  loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+  errorMsg.style.display = 'none';
+
+  // 1. Local Comparison (Case-insensitive for email)
+  const MASTER_EMAIL = "immarajuvasu2@gmail.com";
+  const MASTER_PASS = "200421";
+
+  if (emailInput.toLowerCase() === MASTER_EMAIL.toLowerCase() && passwordInput === MASTER_PASS) {
+    console.log("Local authentication successful.");
+    isAdminAuthenticated = true;
+    document.getElementById('adminLoginView').style.display = 'none';
+    document.getElementById('adminMessagesView').style.display = 'block';
+    document.getElementById('portalSub').textContent = "Reviewing all messages sent via the portfolio.";
+    await fetchMessages();
+    return;
+  }
+
+  // 2. Server Fallback
+  try {
+    const response = await fetch('http://localhost:5000/api/admin/login', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailInput, password: passwordInput })
     });
 
     const result = await response.json();
 
     if (result.success) {
-      document.getElementById('contactForm').style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
-      // add a touch ripple to the success bubble
-      createTouchRipple(document.querySelector('.success-bubble'));
+      isAdminAuthenticated = true;
+      document.getElementById('adminLoginView').style.display = 'none';
+      document.getElementById('adminMessagesView').style.display = 'block';
+      document.getElementById('portalSub').textContent = "Reviewing all messages sent via the portfolio.";
+      await fetchMessages();
     } else {
-      throw new Error(result.error || 'Failed to send');
+      throw new Error(result.message || "Unauthorized access detected.");
     }
-  } catch (error) {
-    console.error('Submission error:', error);
-    // Fallback: show the success UI anyway but log the error
-    // Or you could show an error message
-    // For now, let's keep it user friendly
-    document.getElementById('contactForm').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
-    createTouchRipple(document.querySelector('.success-bubble'));
+  } catch (err) {
+    console.error("Login failure:", err);
+    errorMsg.style.display = 'block';
+    errorMsg.innerHTML = `<i class="fas fa-user-shield"></i> Access Denied: ${err.message || "Verification Failed"}`;
+    setTimeout(() => {
+      if (!isAdminAuthenticated) errorMsg.style.display = 'none';
+    }, 5000);
+  } finally {
+    loginBtn.innerHTML = '<i class="fas fa-unlock"></i> Authenticate';
   }
 }
+
+
+function adminLogout() {
+  isAdminAuthenticated = false;
+  document.getElementById('adminLoginView').style.display = 'block';
+  document.getElementById('adminMessagesView').style.display = 'none';
+  document.getElementById('portalSub').textContent = "Identity verification required to view logs.";
+  document.getElementById('adminEmail').value = '';
+  document.getElementById('adminPassword').value = '';
+}
+
+function closeMessagesModal() {
+  messagesModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeMessagesModalOnOverlay(e) {
+  if (e.target === messagesModal) closeMessagesModal();
+}
+
+// Automatically remove local messages older than 7 days
+function cleanOldLocalMessages() {
+  const localMsgs = JSON.parse(localStorage.getItem('sent_messages') || '[]');
+  const now = new Date();
+  const sevenDaysAgo = now.getTime() - (7 * 24 * 60 * 60 * 1000);
+
+  const filteredMsgs = localMsgs.filter(msg => {
+    const msgDate = new Date(msg.date).getTime();
+    return msgDate > sevenDaysAgo;
+  });
+
+  localStorage.setItem('sent_messages', JSON.stringify(filteredMsgs));
+}
+
+async function fetchMessages() {
+  cleanOldLocalMessages();
+  let allMessages = [];
+
+  // 1. Get from LocalStorage
+  const localMsgs = JSON.parse(localStorage.getItem('sent_messages') || '[]');
+  allMessages = [...localMsgs];
+
+  // 2. Try to supplement from Backend
+  try {
+    const response = await fetch('http://localhost:5000/api/contact');
+    if (response.ok) {
+      const serverMsgs = await response.json();
+      const uniqueServerMsgs = serverMsgs.filter(s =>
+        !localMsgs.some(l => (l.message === s.message && l.email === s.email))
+      );
+      allMessages = [...localMsgs, ...uniqueServerMsgs];
+    }
+  } catch (err) {
+    console.warn('Server offline, showing local cache.');
+  }
+
+  // Sort by date descending
+  allMessages.sort((a, b) => new Date(b.date) - new Date(a.date));
+  displayMessages(allMessages);
+}
+
+function displayMessages(messages) {
+  if (!messages || messages.length === 0) {
+    messagesList.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted);">
+      <i class="fas fa-inbox fa-2x"></i>
+      <p style="margin-top: 10px;">Security logs are empty. No messages detected.</p>
+    </div>`;
+    return;
+  }
+
+  messagesList.innerHTML = messages.map(msg => `
+    <div class="msg-item">
+      <div class="msg-header">
+        <span class="msg-sender"><i class="fas fa-user-circle"></i> ${msg.firstName || msg.fname} ${msg.lastName || msg.lname}</span>
+        <span class="msg-time">${new Date(msg.date).toLocaleString()}</span>
+      </div>
+      <span class="msg-subject" style="color: var(--cyan); font-weight: 700; display: block; margin-bottom: 8px;">Subject: ${msg.subject}</span>
+      <p class="msg-body">${msg.message}</p>
+      <div style="margin-top: 12px; font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+        <i class="fas fa-reply"></i> ${msg.email}
+      </div>
+    </div>
+  `).join('');
+}
+
 
 
 // ─── DOWNLOAD RESUME STUB ──────────────────────────────────────

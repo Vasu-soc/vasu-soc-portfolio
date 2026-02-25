@@ -14,6 +14,7 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 
 <body>
@@ -41,23 +42,30 @@
                 <li><a href="#certs" class="nav-link" data-section="certs">Certs</a></li>
                 <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
             </ul>
-            <button class="nav-cta liquid-btn primary sm" onclick="scrollSection('contact')">Hire Me</button>
 
-            <!-- ===== THEME TOGGLE ===== -->
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Switch theme">
-                <div class="theme-toggle-track">
-                    <div class="theme-toggle-thumb">
-                        <i class="fas fa-moon theme-icon-dark"></i>
-                        <i class="fas fa-sun theme-icon-light"></i>
+            <div class="nav-toggles">
+                <!-- ===== THEME TOGGLE ===== -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Switch theme">
+                    <div class="theme-toggle-track">
+                        <div class="theme-toggle-thumb">
+                            <i class="fas fa-moon theme-icon-dark"></i>
+                            <i class="fas fa-sun theme-icon-light"></i>
+                        </div>
+                        <span class="theme-label-dark">Dark</span>
+                        <span class="theme-label-light">Light</span>
                     </div>
-                    <span class="theme-label-dark">Dark</span>
-                    <span class="theme-label-light">Light</span>
-                </div>
-            </button>
+                </button>
 
-            <button class="hamburger" id="hamburger" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
+                <!-- ===== MESSAGES TOGGLE ===== -->
+                <button class="msg-toggle" id="msgToggle" aria-label="Messages" title="View Send Messages"
+                    onclick="openMessagesModal()">
+                    <i class="fas fa-envelope"></i>
+                </button>
+
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -382,6 +390,51 @@
                         <span class="badge-pill kc7-color"><i class="fas fa-shield-halved"></i> Blue Team</span>
                     </div>
 
+                </div>
+
+                <!-- LetsDefend Badge -->
+                <div class="badge-card glass-card" id="letsdefend-badge-card">
+                    <div class="badge-card-header">
+                        <div class="badge-platform-icon letsdefend-color">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div>
+                            <div class="badge-platform-name">LetsDefend</div>
+                            <div class="badge-platform-sub">Blue Team Training Platform</div>
+                        </div>
+                        <a href="https://app.letsdefend.io/user/immarajuvasu2" target="_blank" rel="noopener"
+                            class="badge-external-link">
+                            <i class="fas fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+
+                    <div class="kc7-profile-display" style="border-color: rgba(0, 212, 255, 0.2);">
+                        <div class="kc7-avatar-ring">
+                            <div class="kc7-avatar" style="background: linear-gradient(135deg, #00d4ff, #4361ee);">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="kc7-info">
+                            <h4 class="kc7-name">Immaraju Vasu</h4>
+                            <p class="kc7-handle">@immarajuvasu2</p>
+                            <div class="kc7-stats-row">
+                                <div class="kc7-stat"><i class="fas fa-trophy"></i> <span>Enrolled</span></div>
+                                <div class="kc7-stat"><i class="fas fa-check-double"></i> <span>Blue Team</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="https://app.letsdefend.io/user/immarajuvasu2" target="_blank" rel="noopener"
+                        class="liquid-btn primary sm kc7-visit-btn">
+                        <i class="fas fa-external-link-alt"></i> View LetsDefend Profile
+                    </a>
+
+                    <div class="badge-card-footer">
+                        <span class="badge-pill letsdefend-color"><i class="fas fa-shield-virus"></i> SOC Analyst
+                            Path</span>
+                        <span class="badge-pill letsdefend-color"><i class="fas fa-microscope"></i> Incident
+                            Response</span>
+                    </div>
                 </div>
 
             </div>
@@ -1030,6 +1083,15 @@
                                 </div>
                                 <i class="fas fa-arrow-right cl-arrow"></i>
                             </a>
+                            <a href="https://app.letsdefend.io/user/immarajuvasu2" target="_blank"
+                                class="contact-link-item" id="letsdefend-link">
+                                <div class="cl-icon-bubble letsdefend-color"><i class="fas fa-user-shield"></i></div>
+                                <div class="cl-content">
+                                    <span class="cl-label">LetsDefend</span>
+                                    <span class="cl-value">app.letsdefend.io/user/immarajuvasu2</span>
+                                </div>
+                                <i class="fas fa-arrow-right cl-arrow"></i>
+                            </a>
                         </div>
 
                         <div class="availability-status">
@@ -1140,12 +1202,62 @@
                             class="fab fa-github"></i></a>
                     <a href="https://tryhackme.com/p/Vasu3" target="_blank" class="social-bubble"
                         aria-label="TryHackMe"><i class="fas fa-skull"></i></a>
+                    <a href="https://app.letsdefend.io/user/immarajuvasu2" target="_blank" class="social-bubble"
+                        aria-label="LetsDefend"><i class="fas fa-user-shield"></i></a>
                 </div>
                 <p class="footer-copy">&copy; 2024 VASU &middot; SOC L1 Portfolio &middot; Crafted with 💧 &amp;
                     precision</p>
             </div>
         </div>
     </footer>
+
+    <!-- ========== MESSAGES MODAL ========== -->
+    <div class="modal-overlay" id="messagesModal" onclick="closeMessagesModalOnOverlay(event)">
+        <div class="modal-bubble glass-card">
+            <button class="modal-close" onclick="closeMessagesModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-case-header">
+                <div class="modal-case-id">ADMIN PANEL</div>
+                <h2>Secure <span class="gradient-text">Portal</span></h2>
+                <p id="portalSub" style="color: var(--text-secondary); font-size: 0.9rem;">Identity verification
+                    required to view logs.</p>
+            </div>
+
+            <!-- LOGIN VIEW -->
+            <div id="adminLoginView" class="admin-login-view">
+                <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                    <div class="login-input-group">
+                        <label>Identity</label>
+                        <input type="email" id="adminEmail" placeholder="Enter Admin Email" required>
+                    </div>
+                    <div class="login-input-group">
+                        <label>Access Key</label>
+                        <input type="password" id="adminPassword" placeholder="Enter Password" required>
+                    </div>
+                    <button type="submit" id="loginBtn" class="liquid-btn primary full-width">
+                        <i class="fas fa-unlock"></i> Authenticate
+                    </button>
+                    <p id="loginError"
+                        style="color: #ef233c; font-size: 0.8rem; margin-top: 15px; display: none; text-align: center;">
+                        <i class="fas fa-user-shield"></i> Unauthorized access blocked. Check credentials.
+                    </p>
+                </form>
+            </div>
+
+            <!-- MESSAGES VIEW (Hidden by default) -->
+            <div id="adminMessagesView" style="display: none;">
+                <div id="messagesList" class="messages-list">
+                    <div class="loading-spinner" style="text-align: center; padding: 40px; color: var(--cyan);">
+                        <i class="fas fa-spinner fa-spin fa-2x"></i>
+                        <p style="margin-top: 10px;">Retrieving secure logs...</p>
+                    </div>
+                </div>
+                <button onclick="adminLogout()" class="liquid-btn sm"
+                    style="margin-top: 20px; width: 100%; opacity: 0.7; justify-content: center;">
+                    <i class="fas fa-sign-out-alt"></i> Secure Logout
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ========== CASE MODAL ========== -->
     <div class="modal-overlay" id="caseModal" onclick="closeModal(event)">

@@ -23,7 +23,7 @@ const contactSchema = new mongoose.Schema({
     email: String,
     subject: String,
     message: String,
-    date: { type: Date, default: Date.now }
+    date: { type: Date, default: Date.now, expires: 604800 } // Auto-delete after 7 days
 });
 
 const certificateSchema = new mongoose.Schema({
@@ -90,7 +90,7 @@ const Badge = mongoose.model('Badge', badgeSchema);
 const Project = mongoose.model('Project', projectSchema);
 const Timeline = mongoose.model('Timeline', timelineSchema);
 
-// Routes
+// ─── ROUTES ─────────────────────────────────────────────────────
 app.post('/api/contact', async (req, res) => {
     try {
         const { fname, lname, email, subject, message } = req.body;
@@ -106,6 +106,27 @@ app.post('/api/contact', async (req, res) => {
     } catch (error) {
         console.error('Error saving message:', error);
         res.status(500).json({ success: false, error: 'Failed to save message' });
+    }
+});
+
+app.post('/api/admin/login', (req, res) => {
+    const { email, password } = req.body;
+    const MASTER_EMAIL = "immarajuvasu2@gmail.com";
+    const MASTER_PASS = "200421";
+
+    if (email && email.toLowerCase() === MASTER_EMAIL.toLowerCase() && password === MASTER_PASS) {
+        res.json({ success: true, token: "SOC_ACCESS_GRANTED_" + Date.now() });
+    } else {
+        res.status(401).json({ success: false, message: "Unauthorized access detected. Identity check failed." });
+    }
+});
+
+app.get('/api/contact', async (req, res) => {
+    try {
+        const contacts = await Contact.find().sort({ date: -1 });
+        res.json(contacts);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
