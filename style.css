@@ -1942,6 +1942,13 @@ select {
     box-shadow: 0 8px 24px rgba(0, 212, 255, 0.2);
 }
 
+.blue-bubble {
+    background: rgba(67, 97, 238, 0.15);
+    color: var(--blue-2);
+    box-shadow: 0 8px 24px rgba(67, 97, 238, 0.2);
+}
+
+
 .orange-bubble {
     background: rgba(247, 127, 0, 0.15);
     color: var(--orange);
@@ -2996,11 +3003,14 @@ select {
 }
 
 /* ====================================================
-   RESPONSIVE
+   RESPONSIVE — Comprehensive Mobile Fix
    ==================================================== */
+
+/* ---------- 900px and below ---------- */
 @media (max-width: 900px) {
     .about-grid {
         grid-template-columns: 1fr;
+        gap: 40px;
     }
 
     .contact-grid {
@@ -3026,9 +3036,22 @@ select {
     .float-badge {
         display: none;
     }
+
+    /* Projects big-grid: switch to single column earlier */
+    .big-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modal metrics: 2 cols */
+    .modal-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
+/* ---------- 768px and below ---------- */
 @media (max-width: 768px) {
+
+    /* NAV */
     .nav-inner {
         padding: 8px 16px;
         gap: 8px;
@@ -3036,6 +3059,10 @@ select {
 
     .nav-logo span {
         display: none;
+    }
+
+    .nav-toggles {
+        gap: 8px;
     }
 
     .theme-toggle-track {
@@ -3110,28 +3137,409 @@ select {
         display: flex;
         z-index: 2001;
     }
+
+    /* HERO */
+    .hero-section {
+        padding: 100px 16px 60px;
+    }
+
+    .hero-name {
+        font-size: clamp(1.4rem, 7vw, 2.2rem);
+        letter-spacing: 2px;
+    }
+
+    .hero-title {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+    }
+
+    .hero-sub {
+        font-size: 0.95rem;
+        margin-bottom: 32px;
+    }
+
+    .hero-stats {
+        gap: 12px;
+    }
+
+    .stat-bubble {
+        padding: 16px 18px;
+        min-width: 110px;
+    }
+
+    .stat-num {
+        font-size: 1.8rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .hero-actions .liquid-btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+
+    /* ABOUT */
+    .avatar-bubble-ring {
+        width: 220px;
+        height: 220px;
+    }
+
+    .avatar-img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .ring-1 {
+        width: 155px;
+        height: 155px;
+    }
+
+    .ring-2 {
+        width: 190px;
+        height: 190px;
+    }
+
+    .ring-3 {
+        width: 220px;
+        height: 220px;
+    }
+
+    /* SKILLS GRID */
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* TOOLS */
+    .tools-categories {
+        grid-template-columns: 1fr;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mini-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .big-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* CERTS */
+    .certs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* BADGES */
+    .badges-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kc7-profile-display {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .kc7-stats-row {
+        justify-content: center;
+    }
+
+    /* CONTACT — form row collapse */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .contact-info-card,
+    .contact-form-card {
+        padding: 24px 20px;
+    }
+
+    /* MODAL */
+    .modal-bubble {
+        padding: 24px 20px;
+    }
+
+    .modal-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .modal-case-header h2 {
+        font-size: 1.2rem;
+    }
+
+    /* BADGE MODAL */
+    .badge-modal-content {
+        width: 95%;
+        height: 85%;
+    }
+
+    /* TIMELINE */
+    .tl-content {
+        padding: 18px;
+    }
 }
 
+/* ---------- 480px and below ---------- */
 @media (max-width: 480px) {
-    .hero-title {
-        font-size: 2.4rem;
-    }
 
-    .section {
-        padding: 70px 0;
-    }
-
+    /* NAV */
     .glass-nav {
-        width: calc(100% - 24px);
+        width: calc(100% - 20px);
         top: 8px;
     }
 
     .nav-inner {
-        padding: 12px 18px;
+        padding: 10px 14px;
+    }
+
+    /* SECTIONS */
+    .section {
+        padding: 60px 0;
+    }
+
+    .container {
+        padding: 0 16px;
+    }
+
+    /* HERO */
+    .hero-section {
+        padding: 90px 12px 50px;
+    }
+
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+    }
+
+    .hero-name {
+        font-size: clamp(1.2rem, 6.5vw, 1.8rem);
+        letter-spacing: 1.5px;
+    }
+
+    .hero-title {
+        font-size: clamp(1.8rem, 8.5vw, 2.6rem);
+    }
+
+    .hero-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .stat-bubble {
+        padding: 14px 10px;
+        min-width: unset;
+        width: 100%;
+        border-radius: 16px;
+    }
+
+    .stat-num {
+        font-size: 1.6rem;
     }
 
     .float-badge {
         display: none;
+    }
+
+    /* ABOUT */
+    .avatar-bubble-ring {
+        width: 180px;
+        height: 180px;
+    }
+
+    .avatar-img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .ring-1 {
+        width: 125px;
+        height: 125px;
+    }
+
+    .ring-2 {
+        width: 155px;
+        height: 155px;
+    }
+
+    .ring-3 {
+        width: 180px;
+        height: 180px;
+    }
+
+    .about-section {
+        padding: 60px 0;
+    }
+
+    .about-lead {
+        font-size: 1.05rem;
+    }
+
+    /* SECTION HEADERS */
+    .section-header {
+        margin-bottom: 40px;
+    }
+
+    .section-title {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+    }
+
+    .section-sub {
+        font-size: 0.88rem;
+    }
+
+    /* SKILLS */
+    .skill-card {
+        padding: 22px;
+    }
+
+    /* TOOLS */
+    .tools-center-bubble {
+        width: 80px;
+        height: 80px;
+        font-size: 0.65rem;
+        margin-bottom: 36px;
+    }
+
+    .tools-center-bubble i {
+        font-size: 1.4rem;
+    }
+
+    .tool-category-bubble {
+        padding: 20px;
+    }
+
+    /* PROJECTS */
+    .project-card {
+        padding: 20px;
+    }
+
+    .coming-soon-card {
+        padding: 32px 20px;
+    }
+
+    /* KC7 cert grid: 2 cols on small phones */
+    .kc7-cert-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* TIMELINE */
+    .tl-right .timeline-bubble,
+    .tl-left .timeline-bubble {
+        padding-left: 62px;
+    }
+
+    .tl-content {
+        padding: 14px;
+    }
+
+    .tl-content h3 {
+        font-size: 0.95rem;
+    }
+
+    /* CERTS */
+    .cert-img-wrap {
+        height: 180px;
+        padding: 16px;
+    }
+
+    .cert-featured .cert-content {
+        padding: 18px 20px 22px;
+    }
+
+    /* CONTACT */
+    .contact-section {
+        padding: 60px 0;
+    }
+
+    .contact-info-card,
+    .contact-form-card {
+        padding: 20px 16px;
+    }
+
+    .availability-status {
+        gap: 10px;
+    }
+
+    /* FOOTER */
+    .footer {
+        padding: 36px 0;
+    }
+
+    .footer-social {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+        padding: 12px;
+    }
+
+    .modal-bubble {
+        padding: 20px 16px;
+        border-radius: 20px;
+    }
+
+    .modal-metrics {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .modal-metric {
+        padding: 12px;
+    }
+
+    .modal-metric .val {
+        font-size: 1.1rem;
+    }
+
+    /* SCROLL-TO-TOP */
+    .scroll-top-btn {
+        bottom: 20px;
+        right: 16px;
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+    }
+
+    /* BADGE PILLS — wrap & shrink */
+    .badge-card-footer {
+        gap: 8px;
+    }
+
+    .badge-pill {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+    }
+
+    /* STREAK ITEMS */
+    .streak-item-mini {
+        width: 68px;
+        padding: 8px 6px;
+    }
+
+    .streak-item-mini span {
+        font-size: 0.62rem;
+    }
+
+    /* LIQUID BUTTONS */
+    .liquid-btn {
+        padding: 12px 22px;
+        font-size: 0.88rem;
+    }
+
+    .liquid-btn.sm {
+        padding: 9px 16px;
+        font-size: 0.8rem;
     }
 }
 
@@ -3701,19 +4109,4 @@ select {
     border: none;
 }
 
-@media (max-width: 768px) {
-    .badge-modal-content {
-        width: 95%;
-        height: 90%;
-    }
-
-    .avatar-bubble-ring {
-        width: 220px;
-        height: 220px;
-    }
-
-    .avatar-img {
-        width: 150px;
-        height: 150px;
-    }
-}
+/* Avatar bubble ring responsive styles are now handled in the main responsive block above */
