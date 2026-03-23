@@ -108,15 +108,50 @@ window.addEventListener('scroll', () => {
   });
 });
 
-// mobile menu
+// mobile menu — premium slide + X animation
 const hamburger = document.getElementById('hamburger');
 const navLinksEl = document.getElementById('navLinks');
+
+// Create backdrop element once
+const menuBackdrop = document.createElement('div');
+menuBackdrop.className = 'nav-menu-backdrop';
+document.body.appendChild(menuBackdrop);
+
+function openMobileMenu() {
+  navLinksEl.classList.add('open');
+  hamburger.classList.add('open');
+  menuBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+  navLinksEl.classList.remove('open');
+  hamburger.classList.remove('open');
+  menuBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 hamburger.addEventListener('click', () => {
-  navLinksEl.classList.toggle('open');
+  if (navLinksEl.classList.contains('open')) {
+    closeMobileMenu();
+  } else {
+    openMobileMenu();
+  }
 });
-// close mobile menu on link click
+
+// Close menu when backdrop is tapped
+menuBackdrop.addEventListener('click', closeMobileMenu);
+
+// Close menu on nav link click
 navLinksEl.querySelectorAll('a').forEach(l => {
-  l.addEventListener('click', () => navLinksEl.classList.remove('open'));
+  l.addEventListener('click', closeMobileMenu);
+});
+
+// Close with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && navLinksEl.classList.contains('open')) {
+    closeMobileMenu();
+  }
 });
 
 
