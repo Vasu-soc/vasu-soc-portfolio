@@ -4061,6 +4061,10 @@ select {
     color: #00d4ff;
 }
 
+.htb-color {
+    color: #9fe52d;
+}
+
 /* ── light theme overrides ── */
 [data-theme="light"] .badge-iframe-wrap {
     background: rgba(255, 255, 255, 0.85);

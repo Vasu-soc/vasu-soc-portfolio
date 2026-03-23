@@ -219,7 +219,7 @@ const revealObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 
 // add reveal class to all cards + sections
-document.querySelectorAll('.skill-card,.project-card,.cert-card,.tool-category-bubble,.qi-item,.about-text-wrap,.about-avatar-wrap').forEach(el => {
+document.querySelectorAll('.skill-card,.project-card,.cert-card,.badge-card,.tool-category-bubble,.qi-item,.about-text-wrap,.about-avatar-wrap').forEach(el => {
   el.classList.add('reveal');
   revealObs.observe(el);
 });
