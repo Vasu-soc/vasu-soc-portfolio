@@ -166,9 +166,13 @@ app.get('/api/timeline', async (req, res) => {
     }
 });
 
-// Hello route for testing
+// Serve static files
+const path = require('path');
+app.use(express.static(__dirname));
+
+// Serve the frontend
 app.get('/', (req, res) => {
-    res.send('SOC Portfolio Backend is running!');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
