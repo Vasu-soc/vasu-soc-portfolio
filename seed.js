@@ -72,12 +72,20 @@ const seedData = async () => {
         // Seed Timeline
         await Timeline.create([
             {
+                year: 'Present',
+                title: 'SIEMXPERT – SOC Analyst Training Journey',
+                description: 'Currently undergoing SOC Analyst training at SIEMXPERT, building practical skills in Security Operations Center (SOC) workflows, SIEM fundamentals, log analysis, threat detection, and incident investigation. Continuously gaining hands-on experience with real-world security scenarios and strengthening core blue team and cybersecurity analysis skills.',
+                icon: 'fas fa-user-shield',
+                tags: ['SIEMXPERT', 'SOC Training', 'SIEM', 'Threat Detection', 'Blue Team'],
+                side: 'left'
+            },
+            {
                 year: '2026',
                 title: 'SOC Analyst Path & Consistent Self-Learning',
                 description: 'Committed to becoming a SOC Analyst by following a disciplined, daily self-learning routine. Actively shared learning progress and insights on LinkedIn. Built multiple hands-on mini projects, including log analysis and SOC simulation work, to strengthen practical skills.',
                 icon: 'fas fa-microscope',
                 tags: ['SOC Analyst', 'Self-Learning', 'Projects', 'LinkedIn', 'Consistency'],
-                side: 'left'
+                side: 'right'
             },
             {
                 year: '2025',
@@ -85,7 +93,7 @@ const seedData = async () => {
                 description: 'Enrolled in a 6-month Ethical Hacking and Cybersecurity course at SkillsUprise (July–December). Successfully completed the program with hands-on training in security concepts and practical techniques. Participated in a malware-focused hackathon conducted during the course and secured 2nd place, earning a cash prize of ₹3000.',
                 icon: 'fas fa-trophy',
                 tags: ['Ethical Hacking', 'Cybersecurity', 'Hackathon', 'Malware', 'SkillsUprise'],
-                side: 'right'
+                side: 'left'
             },
             {
                 year: '2024',
@@ -93,7 +101,7 @@ const seedData = async () => {
                 description: 'Started exploring cybersecurity by understanding how it works in the real world. Researched core concepts such as threats, vulnerabilities, attacks, and how data flows across systems and networks. Built a strong base by learning how security applies to real-world environments.',
                 icon: 'fas fa-rocket',
                 tags: ['Research', 'Fundamentals', 'Networking Basics', 'Security Concepts'],
-                side: 'left'
+                side: 'right'
             }
         ]);
 
@@ -125,6 +133,16 @@ const seedData = async () => {
 
         // Seed Certificates
         await Certificate.create([
+            {
+                id: 'haxcamp-2294',
+                title: 'AI SOC Analyst Challenge',
+                provider: 'Haxcamp',
+                description: 'Successfully completed the Haxcamp Live Challenge focused on AI security operations, threat detection, and response.',
+                date: '2026',
+                pdfUrl: 'assets/certs/certificate-2294_page-0001.jpg',
+                color: 'blue',
+                ribbon: 'Challenge'
+            },
             {
                 id: 'skillsuprise-01',
                 title: 'Ethical Hacking & Cyber Security',
