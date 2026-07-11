@@ -172,6 +172,36 @@ const seedData = async () => {
                 pdfUrl: 'assets/certs/thm_intro_cyber.pdf',
                 color: 'blue',
                 ribbon: 'Foundational'
+            },
+            {
+                id: 'kc7-rapbeef',
+                title: 'Cybersecurity Investigation – Rap Beef',
+                provider: 'KC7 Foundation',
+                description: 'Investigated a themed scenario involving rival hip-hop artists, applying KQL to identify suspicious communications, track unauthorized exchanges, and uncover threat patterns — reinforcing data analysis and threat detection skills.',
+                date: 'Feb 2026',
+                pdfUrl: 'assets/certs/kc7_rap_beef.jpg',
+                color: 'orange',
+                ribbon: 'Investigation'
+            },
+            {
+                id: 'thm-90day',
+                title: '90 Day Streak Badge',
+                provider: 'TryHackMe',
+                description: 'Awarded for hacking consistently for 90 days in a row — demonstrating exceptional discipline, dedication, and daily commitment to cybersecurity skill-building.',
+                date: '2026',
+                pdfUrl: 'assets/certs/thm_90_day_streak.png',
+                color: 'red',
+                ribbon: '🔥 90 Days'
+            },
+            {
+                id: 'tata-forage',
+                title: 'Cybersecurity Analyst Job Simulation',
+                provider: 'Tata Group & Forage',
+                description: 'Completed practical tasks in Identity and Access Management (IAM) strategy assessment, design of custom IAM solutions, IAM fundamentals, and security platform integration.',
+                date: 'July 2026',
+                pdfUrl: 'assets/certs/tata_forage.png',
+                color: 'blue',
+                ribbon: 'Job Simulation'
             }
         ]);
 

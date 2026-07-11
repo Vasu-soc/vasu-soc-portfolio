@@ -683,9 +683,15 @@ function displayMessages(messages) {
 
 
 
-// ─── DOWNLOAD RESUME STUB ──────────────────────────────────────
+// ─── DOWNLOAD RESUME ──────────────────────────────────────
 function downloadResume() {
-  // In production, link to actual PDF
+  const link = document.createElement('a');
+  link.href = 'assets/certs/Vasu-soc-analyst.pdf';
+  link.download = 'Vasu-soc-analyst.pdf';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
   const toast = document.createElement('div');
   toast.style.cssText = `
     position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
@@ -695,7 +701,7 @@ function downloadResume() {
     box-shadow:0 8px 32px rgba(0,212,255,0.4);
     animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
   `;
-  toast.textContent = '📄 Resume download will be available soon!';
+  toast.textContent = '📄 Vasu-soc-analyst.pdf download started!';
   document.head.insertAdjacentHTML('beforeend', `<style>@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}</style>`);
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3500);

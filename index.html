@@ -36,6 +36,7 @@
                 <li><a href="#badges" class="nav-link" data-section="badges">Platforms</a></li>
                 <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
                 <li><a href="#projects" class="nav-link" data-section="projects">Projects</a></li>
+                <li><a href="#ai-agents" class="nav-link" data-section="ai-agents">AI Agents</a></li>
                 <li><a href="#tools" class="nav-link" data-section="tools">Tools</a></li>
                 <li><a href="#investigations" class="nav-link" data-section="investigations">Investigations</a></li>
                 <li><a href="#timeline" class="nav-link" data-section="timeline">Timeline</a></li>
@@ -721,6 +722,101 @@
         <div class="liquid-divider bottom"></div>
     </section>
 
+    <!-- ========== AI AGENTS ========== -->
+    <section id="ai-agents" class="section ai-agents-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">03.2 / AI Agents &amp; Automation</div>
+                <h2 class="section-title">AI <span class="gradient-text">Agents</span></h2>
+                <p class="section-sub">Autonomous AI agents built to streamline cybersecurity workflows, automate log analysis, and scale threat intelligence parsing.</p>
+            </div>
+
+            <div class="agents-grid">
+                <!-- Agent Card 1: SentinelAgent -->
+                <div class="agent-card glass-card" data-color="cyan">
+                    <div class="agent-badge">
+                        <span class="agent-status-dot online"></span>
+                        <span>Active / Online</span>
+                    </div>
+                    <div class="agent-icon-bubble cyan-bubble">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="agent-body">
+                        <div class="agent-meta">
+                            <span class="agent-type"><i class="fas fa-microchip"></i> Autonomous Triage</span>
+                            <span class="agent-version">v1.2.0</span>
+                        </div>
+                        <h3>SentinelAgent: Log Triage &amp; Alert Analyst</h3>
+                        <p>An intelligent agent designed to parse voluminous firewall and system authorization logs. It automatically correlates event trails, performs threat heuristics, screens for false positives, and constructs playbooks for threat isolation.</p>
+                        
+                        <div class="agent-capabilities">
+                            <h4>Capabilities:</h4>
+                            <ul>
+                                <li><i class="fas fa-circle-check"></i> Real-time Syslog &amp; IIS log ingestion and parsing</li>
+                                <li><i class="fas fa-circle-check"></i> Heuristic detection of brute-force &amp; privilege escalations</li>
+                                <li><i class="fas fa-circle-check"></i> Autonomous generation of incident summary reports</li>
+                            </ul>
+                        </div>
+
+                        <div class="agent-tech-stack">
+                            <span class="tech-tag"><i class="fab fa-python"></i> Python</span>
+                            <span class="tech-tag"><i class="fas fa-network-wired"></i> LangChain</span>
+                            <span class="tech-tag"><i class="fas fa-brain"></i> OpenAI API</span>
+                            <span class="tech-tag"><i class="fas fa-database"></i> VectorDB</span>
+                        </div>
+
+                        <div class="agent-actions">
+                            <a href="https://github.com/Vasu-soc/SentinelAgent" target="_blank" rel="noopener" class="liquid-btn sm primary">
+                                <i class="fab fa-github"></i> View Repository
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent Card 2: IntelScout -->
+                <div class="agent-card glass-card" data-color="purple">
+                    <div class="agent-badge">
+                        <span class="agent-status-dot scheduled"></span>
+                        <span>Idle / Scheduled</span>
+                    </div>
+                    <div class="agent-icon-bubble purple-bubble">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="agent-body">
+                        <div class="agent-meta">
+                            <span class="agent-type"><i class="fas fa-magnifying-glass-chart"></i> Threat Intel Scraper</span>
+                            <span class="agent-version">v0.9.5</span>
+                        </div>
+                        <h3>IntelScout: OSINT Threat Intel Agent</h3>
+                        <p>A multi-agent framework that continuously monitors public OSINT databases, parses new CVE declarations, extracts associated IOCs (IPs, domains, file hashes), and formats them to structured STIX/TAXII schemas.</p>
+                        
+                        <div class="agent-capabilities">
+                            <h4>Capabilities:</h4>
+                            <ul>
+                                <li><i class="fas fa-circle-check"></i> Autonomous web scraping of threat reports &amp; blogs</li>
+                                <li><i class="fas fa-circle-check"></i> Regular expressions &amp; LLM-based IOC extraction</li>
+                                <li><i class="fas fa-circle-check"></i> Direct integration with MISP threat platforms</li>
+                            </ul>
+                        </div>
+
+                        <div class="agent-tech-stack">
+                            <span class="tech-tag"><i class="fab fa-python"></i> Python</span>
+                            <span class="tech-tag"><i class="fas fa-cubes"></i> CrewAI</span>
+                            <span class="tech-tag"><i class="fas fa-bolt"></i> Ollama (Llama 3)</span>
+                            <span class="tech-tag"><i class="fas fa-folder-tree"></i> STIX/TAXII</span>
+                        </div>
+
+                        <div class="agent-actions">
+                            <a href="https://github.com/Vasu-soc/IntelScout" target="_blank" rel="noopener" class="liquid-btn sm primary">
+                                <i class="fab fa-github"></i> View Repository
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ========== TOOLS ========== -->
     <section id="tools" class="section tools-section">
         <div class="container">
@@ -1238,6 +1334,75 @@
                         </button>
                     </div>
                     <div class="cert-ribbon foundational">Foundational</div>
+                </div>
+
+                <!-- KC7 Foundation – Rap Beef Investigation -->
+                <div class="cert-card glass-card cert-featured" data-color="orange">
+                    <div class="cert-img-wrap" onclick="openBadgeModal('assets/certs/kc7_rap_beef.jpg')">
+                        <img src="assets/certs/kc7_rap_beef.jpg"
+                            alt="KC7 Foundation – Rap Beef Cybersecurity Investigation Certificate" />
+                        <div class="cert-overlay-icon"><i class="fas fa-eye"></i></div>
+                    </div>
+                    <div class="cert-content">
+                        <div class="cert-provider">KC7 Foundation</div>
+                        <h3>Cybersecurity Investigation – Rap Beef</h3>
+                        <p>Investigated a themed scenario involving rival hip-hop artists, applying KQL to identify suspicious communications, track unauthorized exchanges, and uncover threat patterns — reinforcing data analysis and threat detection skills.</p>
+                        <div class="cert-meta">
+                            <span><i class="fas fa-calendar"></i> Feb 2026</span>
+                            <span class="cert-verified"><i class="fas fa-circle-check"></i> Verified</span>
+                        </div>
+                        <button class="liquid-btn sm outline cert-view-btn"
+                            onclick="openBadgeModal('assets/certs/kc7_rap_beef.jpg')">
+                            <i class="fas fa-eye"></i> View Certificate
+                        </button>
+                    </div>
+                    <div class="cert-ribbon">Investigation</div>
+                </div>
+
+                <!-- TryHackMe – 90 Day Streak Badge -->
+                <div class="cert-card glass-card cert-featured" data-color="red">
+                    <div class="cert-img-wrap" onclick="openBadgeModal('assets/certs/thm_90_day_streak.png')">
+                        <img src="assets/certs/thm_90_day_streak.png"
+                            alt="TryHackMe 90 Day Streak Badge" />
+                        <div class="cert-overlay-icon"><i class="fas fa-eye"></i></div>
+                    </div>
+                    <div class="cert-content">
+                        <div class="cert-provider">TryHackMe</div>
+                        <h3>90 Day Streak Badge</h3>
+                        <p>Awarded to <strong>Vasu3</strong> for hacking consistently for 90 days in a row — demonstrating exceptional discipline, dedication, and daily commitment to cybersecurity skill-building.</p>
+                        <div class="cert-meta">
+                            <span><i class="fas fa-calendar"></i> 2026</span>
+                            <span class="cert-verified"><i class="fas fa-circle-check"></i> Achieved</span>
+                        </div>
+                        <button class="liquid-btn sm outline cert-view-btn"
+                            onclick="openBadgeModal('assets/certs/thm_90_day_streak.png')">
+                            <i class="fas fa-eye"></i> View Badge
+                        </button>
+                    </div>
+                    <div class="cert-ribbon streak">🔥 90 Days</div>
+                </div>
+
+                <!-- Tata Group & Forage Cybersecurity Analyst -->
+                <div class="cert-card glass-card cert-featured" data-color="blue">
+                    <div class="cert-img-wrap" onclick="openBadgeModal('assets/certs/tata_forage.png')">
+                        <img src="assets/certs/tata_forage.png"
+                            alt="Tata Group &amp; Forage Cybersecurity Analyst Job Simulation Certificate" />
+                        <div class="cert-overlay-icon"><i class="fas fa-eye"></i></div>
+                    </div>
+                    <div class="cert-content">
+                        <div class="cert-provider">Tata Group &amp; Forage</div>
+                        <h3>Cybersecurity Analyst Job Simulation</h3>
+                        <p>Completed practical tasks in Identity and Access Management (IAM) strategy assessment, design of custom IAM solutions, IAM fundamentals, and security platform integration.</p>
+                        <div class="cert-meta">
+                            <span><i class="fas fa-calendar"></i> July 2026</span>
+                            <span class="cert-verified"><i class="fas fa-circle-check"></i> Completed</span>
+                        </div>
+                        <button class="liquid-btn sm outline cert-view-btn"
+                            onclick="openBadgeModal('assets/certs/tata_forage.png')">
+                            <i class="fas fa-eye"></i> View Certificate
+                        </button>
+                    </div>
+                    <div class="cert-ribbon">Job Simulation</div>
                 </div>
             </div>
             <div class="liquid-divider bottom"></div>
