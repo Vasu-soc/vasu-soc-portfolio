@@ -3,10 +3,98 @@
    iOS Water Bubble Interactions + Animations
    ============================================================ */
 
-// ─── BUBBLE CANVAS ────────────────────────────────────────────
-const canvas = document.getElementById('bubbleCanvas');
+// ─── CYBER NETWORK CANVAS & SECURITY DASHBOARD ENGINE ──────────────
+// Dynamic Web Audio Synthesizer
+class SoundFX {
+  constructor() {
+    this.ctx = null;
+    this.muted = localStorage.getItem('soc-muted') === 'true';
+    this.initToggle();
+  }
+  init() {
+    if (!this.ctx) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+  }
+  playBlip(freq = 800, type = 'sine', duration = 0.08, vol = 0.05) {
+    if (this.muted) return;
+    try {
+      this.init();
+      if (this.ctx.state === 'suspended') this.ctx.resume();
+      
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+      
+      gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+      
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      
+      osc.start();
+      osc.stop(this.ctx.currentTime + duration);
+    } catch (e) {
+      console.warn("Sound playback failed", e);
+    }
+  }
+  playKeyboard() {
+    this.playBlip(600 + Math.random() * 400, 'triangle', 0.04, 0.02);
+  }
+  playSuccess() {
+    this.playBlip(523.25, 'sine', 0.1, 0.06); // C5
+    setTimeout(() => this.playBlip(659.25, 'sine', 0.15, 0.06), 80); // E5
+  }
+  playAlert() {
+    this.playBlip(180, 'sawtooth', 0.3, 0.08);
+    setTimeout(() => this.playBlip(150, 'sawtooth', 0.3, 0.08), 180);
+  }
+  playClick() {
+    this.playBlip(300, 'sine', 0.05, 0.04);
+  }
+  playHover() {
+    this.playBlip(1200, 'sine', 0.02, 0.015);
+  }
+  initToggle() {
+    const btn = document.getElementById('soundToggle');
+    const icon = document.getElementById('soundToggleIcon');
+    if (!btn) return;
+    
+    // Update UI on load
+    if (this.muted) {
+      btn.classList.add('muted');
+      icon.className = 'fas fa-volume-mute';
+    } else {
+      btn.classList.remove('muted');
+      icon.className = 'fas fa-volume-up';
+    }
+    
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.muted = !this.muted;
+      localStorage.setItem('soc-muted', this.muted);
+      
+      if (this.muted) {
+        btn.classList.add('muted');
+        icon.className = 'fas fa-volume-mute';
+      } else {
+        btn.classList.remove('muted');
+        icon.className = 'fas fa-volume-up';
+        this.playSuccess();
+      }
+    });
+  }
+}
+const sfx = new SoundFX();
+
+const canvas = document.getElementById('cyberCanvas');
 const ctx = canvas.getContext('2d');
-let W, H, bubbles = [];
+let W, H, nodes = [];
+let mouse = { x: null, y: null, radius: 150 };
+let ripples = [];
+let streams = [];
+let radarAngle = 0;
 
 function resizeCanvas() {
   W = canvas.width = window.innerWidth;
@@ -15,78 +103,866 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-class Bubble {
-  constructor() { this.reset(true); }
-  reset(init = false) {
-    this.x = Math.random() * W;
-    this.y = init ? Math.random() * H : H + 60;
-    this.r = 8 + Math.random() * 40;
-    this.vx = (Math.random() - 0.5) * 0.4;
-    this.vy = -(0.3 + Math.random() * 0.7);
-    this.alpha = 0.04 + Math.random() * 0.12;
-    this.hue = Math.random() > 0.5 ? 190 : 220 + Math.random() * 60;
-    this.wobble = Math.random() * Math.PI * 2;
-    this.wobbleSpeed = 0.01 + Math.random() * 0.02;
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+window.addEventListener('mouseleave', () => {
+  mouse.x = null;
+  mouse.y = null;
+});
+
+// Binary Stream Class for attractive background data streams
+class DataStream {
+  constructor() {
+    this.x = Math.random() * window.innerWidth;
+    this.y = Math.random() * window.innerHeight;
+    this.vy = 0.3 + Math.random() * 0.8;
+    this.chars = ['0', '1', 'x', 'a', 'f', 'e', 'c', '0', '1', 'd', 'b'];
+    this.text = this.generateText();
+    this.alpha = 0.02 + Math.random() * 0.05;
+    this.fontSize = 8 + Math.random() * 5;
+  }
+  generateText() {
+    let s = "";
+    for (let i = 0; i < 4; i++) {
+      s += this.chars[Math.floor(Math.random() * this.chars.length)];
+    }
+    return s;
   }
   update() {
-    this.wobble += this.wobbleSpeed;
-    this.x += this.vx + Math.sin(this.wobble) * 0.3;
     this.y += this.vy;
-    if (this.y + this.r < 0) this.reset();
+    if (this.y > H) {
+      this.y = -30;
+      this.x = Math.random() * W;
+    }
+    if (Math.random() < 0.02) this.text = this.generateText();
   }
   draw() {
     ctx.save();
-    // gradient fill
-    const g = ctx.createRadialGradient(
-      this.x - this.r * 0.3, this.y - this.r * 0.3, this.r * 0.1,
-      this.x, this.y, this.r
-    );
-    g.addColorStop(0, `hsla(${this.hue},100%,80%,${this.alpha * 1.5})`);
-    g.addColorStop(0.5, `hsla(${this.hue},100%,60%,${this.alpha})`);
-    g.addColorStop(1, `hsla(${this.hue},100%,40%,0)`);
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fillStyle = g;
-    ctx.fill();
-    // rim highlight
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.strokeStyle = `hsla(${this.hue},100%,80%,${this.alpha * 0.8})`;
-    ctx.lineWidth = 0.8;
-    ctx.stroke();
-    // specular
-    ctx.beginPath();
-    ctx.arc(this.x - this.r * 0.3, this.y - this.r * 0.35, this.r * 0.18, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${this.alpha * 3})`;
-    ctx.fill();
+    ctx.font = `${this.fontSize}px 'JetBrains Mono', monospace`;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    ctx.fillStyle = isDark ? `rgba(0, 229, 255, ${this.alpha})` : `rgba(0, 100, 180, ${this.alpha * 0.7})`;
+    ctx.fillText(this.text, this.x, this.y);
     ctx.restore();
   }
 }
 
-// create 80 bubbles
-for (let i = 0; i < 80; i++) bubbles.push(new Bubble());
-
-// click-splash: add 8 bubbles around click point
-canvas.addEventListener('click', (e) => {
-  for (let i = 0; i < 8; i++) {
-    const b = new Bubble();
-    b.x = e.clientX + (Math.random() - 0.5) * 60;
-    b.y = e.clientY + (Math.random() - 0.5) * 60;
-    b.r = 6 + Math.random() * 20;
-    b.vy = -(0.8 + Math.random() * 1.5);
-    b.alpha = 0.15 + Math.random() * 0.2;
-    bubbles.push(b);
+class Node {
+  constructor() {
+    this.x = Math.random() * window.innerWidth;
+    this.y = Math.random() * window.innerHeight;
+    this.vx = (Math.random() - 0.5) * 0.35;
+    this.vy = (Math.random() - 0.5) * 0.35;
+    this.r = 2.0 + Math.random() * 2.5;
+    this.alpha = 0.35 + Math.random() * 0.55;
+    this.state = "secure"; // "secure" or "compromised"
+    this.infectTimer = 0;
+    this.ping = 0; // Visual flash value when radar sweeps over
   }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if (this.x < 0 || this.x > W) this.vx *= -1;
+    if (this.y < 0 || this.y > H) this.vy *= -1;
+
+    // Mouse attraction
+    if (mouse.x !== null && mouse.y !== null) {
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < mouse.radius) {
+        const force = (mouse.radius - dist) / mouse.radius;
+        this.x += (dx / dist) * force * 0.5;
+        this.y += (dy / dist) * force * 0.5;
+      }
+    }
+
+    // Infect ripple hit
+    ripples.forEach(r => {
+      const dx = this.x - r.x;
+      const dy = this.y - r.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (Math.abs(dist - r.currentRadius) < 15 && this.state !== "compromised") {
+        this.state = "compromised";
+        this.infectTimer = 180;
+      }
+    });
+
+    if (this.state === "compromised") {
+      this.infectTimer--;
+      if (this.infectTimer <= 0) {
+        this.state = "secure";
+      }
+    }
+
+    if (this.ping > 0) {
+      this.ping -= 0.02;
+    }
+  }
+  draw() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    
+    // Draw radar sweep ping ring
+    if (this.ping > 0) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r + (1.0 - this.ping) * 12, 0, Math.PI * 2);
+      ctx.strokeStyle = isDark ? `rgba(0, 229, 255, ${this.ping * 0.25})` : `rgba(0, 100, 180, ${this.ping * 0.18})`;
+      ctx.lineWidth = 1.0;
+      ctx.stroke();
+    }
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    
+    if (this.state === "compromised") {
+      ctx.fillStyle = `rgba(255, 23, 68, ${this.alpha})`;
+      ctx.shadowColor = '#ff1744';
+      ctx.shadowBlur = 8;
+    } else {
+      if (isDark) {
+        ctx.fillStyle = this.ping > 0 
+          ? `rgba(0, 229, 255, ${Math.min(1.0, this.alpha + this.ping * 0.5)})` 
+          : `rgba(0, 229, 255, ${this.alpha})`;
+        ctx.shadowColor = '#00e5ff';
+        ctx.shadowBlur = this.ping > 0 ? 10 : 5;
+      } else {
+        ctx.fillStyle = `rgba(0, 100, 180, ${this.alpha})`;
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+      }
+    }
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+}
+
+// Generate Nodes & Data Streams
+for (let i = 0; i < 70; i++) {
+  nodes.push(new Node());
+}
+for (let i = 0; i < 25; i++) {
+  streams.push(new DataStream());
+}
+
+class ThreatRipple {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.maxRadius = 150 + Math.random() * 60;
+    this.currentRadius = 0;
+    this.speed = 3.5;
+    this.alpha = 0.8;
+  }
+  update() {
+    this.currentRadius += this.speed;
+    this.alpha = 1 - (this.currentRadius / this.maxRadius);
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(255, 23, 68, ${this.alpha})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+}
+
+canvas.addEventListener('click', (e) => {
+  ripples.push(new ThreatRipple(e.clientX, e.clientY));
+  sfx.playAlert();
+  if (ripples.length > 5) ripples.shift();
 });
 
-function animateBubbles() {
+function animateCyberNetwork() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   ctx.clearRect(0, 0, W, H);
-  bubbles.forEach(b => { b.update(); b.draw(); });
-  // cull excess
-  if (bubbles.length > 150) bubbles.splice(0, bubbles.length - 150);
-  requestAnimationFrame(animateBubbles);
+
+  // Draw & update background data streams
+  streams.forEach(s => { s.update(); s.draw(); });
+
+  // Update & Draw nodes
+  nodes.forEach(n => { n.update(); n.draw(); });
+
+  // Update & Draw ripples
+  ripples = ripples.filter(r => {
+    r.update();
+    r.draw();
+    return r.currentRadius < r.maxRadius;
+  });
+
+  // Calculate radar sweep angle
+  radarAngle += 0.004;
+  if (radarAngle > Math.PI * 2) radarAngle = 0;
+
+  const centerX = W / 2;
+  const centerY = H / 2;
+  const radarRadius = Math.max(W, H) * 0.8;
+
+  // Check sweep collisions with nodes
+  nodes.forEach(n => {
+    const angleToNode = Math.atan2(n.y - centerY, n.x - centerX);
+    let diff = angleToNode - radarAngle;
+    // Normalize difference to -PI to PI
+    while (diff < -Math.PI) diff += Math.PI * 2;
+    while (diff > Math.PI) diff -= Math.PI * 2;
+    // Highlight if within radar arc (approx 10 degrees)
+    if (diff > 0 && diff < 0.12 && n.ping <= 0) {
+      n.ping = 1.0;
+    }
+  });
+
+  // Draw rotating radar scan gradient arc
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  ctx.arc(centerX, centerY, radarRadius, radarAngle - 0.25, radarAngle);
+  ctx.closePath();
+  const radarGrad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radarRadius);
+  if (isDark) {
+    radarGrad.addColorStop(0, 'rgba(0, 229, 255, 0.025)');
+    radarGrad.addColorStop(1, 'rgba(0, 229, 255, 0)');
+  } else {
+    radarGrad.addColorStop(0, 'rgba(0, 100, 180, 0.015)');
+    radarGrad.addColorStop(1, 'rgba(0, 100, 180, 0)');
+  }
+  ctx.fillStyle = radarGrad;
+  ctx.fill();
+  ctx.restore();
+
+  // Radar thin line edge
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  ctx.lineTo(centerX + Math.cos(radarAngle) * radarRadius, centerY + Math.sin(radarAngle) * radarRadius);
+  ctx.strokeStyle = isDark ? 'rgba(0, 229, 255, 0.04)' : 'rgba(0, 100, 180, 0.02)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Draw linking lines between close nodes
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        
+        let alpha = (100 - dist) / 100 * 0.12;
+        
+        // Boost line alpha if pinged
+        if (nodes[i].ping > 0 || nodes[j].ping > 0) {
+          alpha *= 1.8;
+        }
+
+        if (nodes[i].state === "compromised" || nodes[j].state === "compromised") {
+          ctx.strokeStyle = `rgba(255, 23, 68, ${alpha * 2.2})`;
+          ctx.lineWidth = 1.0;
+        } else {
+          ctx.strokeStyle = isDark ? `rgba(0, 229, 255, ${alpha})` : `rgba(0, 100, 180, ${alpha})`;
+          ctx.lineWidth = 0.6;
+        }
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw hover mouse scanlines
+  if (mouse.x !== null && mouse.y !== null) {
+    nodes.forEach(n => {
+      const dx = n.x - mouse.x;
+      const dy = n.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < mouse.radius) {
+        ctx.beginPath();
+        ctx.moveTo(n.x, n.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        const alpha = (mouse.radius - dist) / mouse.radius * 0.15;
+        ctx.strokeStyle = isDark ? `rgba(0, 229, 255, ${alpha})` : `rgba(0, 100, 180, ${alpha})`;
+        ctx.lineWidth = 0.4;
+        ctx.stroke();
+      }
+    });
+  }
+
+  requestAnimationFrame(animateCyberNetwork);
 }
-animateBubbles();
+animateCyberNetwork();
+
+// Ticker logs
+const threatLogs = [
+  "SYS:// Security Operations Center initialized.",
+  "WARN:// Brute force attempt from Tor Exit Node 185.220.101.44 (Blocked)",
+  "INFO:// Port scan detected from subnet 10.15.2.0/24 (Mitigated)",
+  "ALERT:// Cobalt Strike beacon signature flagged on workstation WS-FIN-04",
+  "INFO:// SentinelAgent running heuristic triage on IIS Log stream",
+  "SUCCESS:// Firewalls sync complete. Zero compromised vectors found.",
+  "WARN:// Phishing report received from HR dept. Domain auto-blocked.",
+  "INFO:// Splunk indexer queue healthy. Status: SECURE",
+  "ALERT:// SQL injection attempt detected at /api/users (WAF blocked)",
+  "SUCCESS:// EDR health check: 142 endpoints reporting active status.",
+  "INFO:// Threat intelligence feeds refreshed from MISP platform."
+];
+
+function startLiveThreatFeed() {
+  const el = document.getElementById('liveAlertFeed');
+  const statusInd = document.querySelector('.status-indicator');
+  const statusTxt = document.querySelector('.status-text');
+  if (!el) return;
+  
+  let index = 0;
+  el.textContent = threatLogs[index];
+  
+  setInterval(() => {
+    index = (index + 1) % threatLogs.length;
+    const log = threatLogs[index];
+    
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = log;
+      el.style.opacity = '1';
+      
+      if (log.startsWith("ALERT")) {
+        if (statusInd) statusInd.classList.add('critical');
+        if (statusTxt) statusTxt.textContent = "ALERT: BREACH SUSPECT";
+        sfx.playAlert();
+        
+        setTimeout(() => {
+          if (statusInd) statusInd.classList.remove('critical');
+          if (statusTxt) statusTxt.textContent = "SYSTEM STATUS: SECURED";
+        }, 5000);
+      } else if (log.startsWith("WARN")) {
+        sfx.playBlip(320, 'triangle', 0.15, 0.04);
+      } else {
+        sfx.playBlip(900, 'sine', 0.02, 0.01);
+      }
+    }, 200);
+  }, 4800);
+}
+
+
+// ─── ENHANCED SOC TERMINAL ENGINE ──────────────────────────────
+const termHistory = [];
+let termHistoryIdx = -1;
+let matrixModeInterval = null;
+let termTypingLocked = false;
+
+function toggleTerminalWindow() {
+  const term = document.getElementById('cyberTerminal');
+  const btnIcon = document.querySelector('#minimizeTerminal i');
+  if (!term) return;
+  term.classList.toggle('collapsed');
+  if (term.classList.contains('collapsed')) {
+    if (btnIcon) btnIcon.className = 'fas fa-chevron-up';
+  } else {
+    if (btnIcon) btnIcon.className = 'fas fa-chevron-down';
+    const inp = document.getElementById('terminalInput');
+    if (inp) inp.focus();
+    sfx.playClick();
+  }
+}
+
+
+
+// Typewriter print — queues characters one by one
+
+function typewriterLine(text, type = 'info', delayStart = 0, speed = 18) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const output = document.getElementById('terminalOutput');
+      if (!output) { resolve(); return; }
+      const line = document.createElement('div');
+      line.className = `term-line ${type}`;
+      output.appendChild(line);
+      let i = 0;
+      const interval = setInterval(() => {
+        line.textContent += text[i];
+        i++;
+        output.scrollTop = output.scrollHeight;
+        if (i >= text.length) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, speed);
+    }, delayStart);
+  });
+}
+
+function writeTerminalLine(text, type = 'cmd', delay = 0) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const output = document.getElementById('terminalOutput');
+      if (!output) { resolve(); return; }
+      const line = document.createElement('div');
+      line.className = `term-line ${type}`;
+      line.textContent = text;
+      output.appendChild(line);
+      output.scrollTop = output.scrollHeight;
+      resolve();
+    }, delay);
+  });
+}
+
+function writeDivider(label = '') {
+  const output = document.getElementById('terminalOutput');
+  if (!output) return;
+  const line = document.createElement('div');
+  line.className = 'term-line divider';
+  line.textContent = label
+    ? `── ${label} ${'─'.repeat(Math.max(0, 42 - label.length))}─`
+    : '─'.repeat(48);
+  output.appendChild(line);
+  output.scrollTop = output.scrollHeight;
+}
+
+// Sequential write helper
+async function writeLines(lines, baseDelay = 0, step = 80) {
+  for (let i = 0; i < lines.length; i++) {
+    await writeTerminalLine(lines[i].text, lines[i].type, baseDelay + i * step);
+  }
+}
+
+// Autocomplete input hint
+const termAutocomplete = {
+  cmds: ['help','about','skills','projects','alert','contact','clear','whoami',
+         'date','ping','status','scan','mitre','tools','certs','banner','matrix',
+         'history','exit','sudo'],
+  hint(val) {
+    if (!val) return '';
+    const match = this.cmds.find(c => c.startsWith(val.toLowerCase()) && c !== val.toLowerCase());
+    return match ? match.slice(val.length) : '';
+  }
+};
+
+// Arrow key history & tab autocomplete
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('terminalInput');
+  if (!inp) return;
+  inp.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (termHistoryIdx < termHistory.length - 1) {
+        termHistoryIdx++;
+        inp.value = termHistory[termHistory.length - 1 - termHistoryIdx];
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (termHistoryIdx > 0) {
+        termHistoryIdx--;
+        inp.value = termHistory[termHistory.length - 1 - termHistoryIdx];
+      } else {
+        termHistoryIdx = -1;
+        inp.value = '';
+      }
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      const hint = termAutocomplete.hint(inp.value);
+      if (hint) inp.value += hint;
+    }
+  });
+});
+
+async function handleTerminalSubmit(e) {
+  e.preventDefault();
+  if (termTypingLocked) return;
+  const input = document.getElementById('terminalInput');
+  const rawCmd = input.value.trim();
+  input.value = '';
+  if (!rawCmd) return;
+
+  // Save history
+  if (rawCmd && (termHistory.length === 0 || termHistory[termHistory.length - 1] !== rawCmd)) {
+    termHistory.push(rawCmd);
+    if (termHistory.length > 50) termHistory.shift();
+  }
+  termHistoryIdx = -1;
+
+  await writeTerminalLine(`guest@vasu-soc:~$ ${rawCmd}`, 'cmd');
+  sfx.playKeyboard();
+
+  const cmd = rawCmd.toLowerCase().trim();
+  const args = cmd.split(' ');
+  const baseCmd = args[0];
+
+  termTypingLocked = true;
+  try {
+    await dispatchTerminalCommand(baseCmd, args.slice(1), rawCmd);
+  } finally {
+    termTypingLocked = false;
+  }
+}
+
+async function dispatchTerminalCommand(cmd, args, rawCmd) {
+  const delay = 120;
+
+  // ── help ──────────────────────────────────────────────────────
+  if (cmd === 'help') {
+    writeDivider('COMMAND REFERENCE');
+    const cmds = [
+      { text: '  whoami          – Display operator identity & session info', type: 'info' },
+      { text: '  about           – Load full security analyst profile', type: 'info' },
+      { text: '  skills          – View technical skills matrix with ratings', type: 'info' },
+      { text: '  projects        – List security tools & architectures built', type: 'info' },
+      { text: '  certs           – Show certifications & training credentials', type: 'info' },
+      { text: '  tools           – Display security toolset arsenal', type: 'info' },
+      { text: '  contact         – Show secure contact channels', type: 'info' },
+      { text: '  status          – Live SOC system health dashboard', type: 'info' },
+      { text: '  scan [ip]       – Simulate network port scan on a host', type: 'info' },
+      { text: '  ping [host]     – Simulate ICMP ping to a target host', type: 'info' },
+      { text: '  mitre [tactic]  – Look up MITRE ATT&CK framework tactics', type: 'info' },
+      { text: '  alert           – Trigger active threat invasion simulation', type: 'info' },
+      { text: '  matrix          – Toggle Matrix rain mode overlay', type: 'info' },
+      { text: '  banner          – Print SOC ASCII art banner', type: 'info' },
+      { text: '  date            – Show current UTC timestamp & uptime', type: 'info' },
+      { text: '  history         – Show last 10 commands entered', type: 'info' },
+      { text: '  sudo            – Attempt privilege escalation (try it)', type: 'info' },
+      { text: '  clear           – Clear the terminal output', type: 'info' },
+      { text: '  exit            – Collapse the terminal window', type: 'info' },
+    ];
+    await writeLines(cmds, 0, 45);
+    writeDivider();
+    await writeTerminalLine('  TIP: Use ↑↓ arrow keys to navigate history. Tab to autocomplete.', 'muted', 45 * cmds.length + 80);
+
+  // ── whoami ────────────────────────────────────────────────────
+  } else if (cmd === 'whoami') {
+    writeDivider('OPERATOR IDENTITY');
+    const lines = [
+      { text: '  USER       : guest (read-only access granted)', type: 'info' },
+      { text: '  ANALYST    : IMMARAJU VASU', type: 'success' },
+      { text: '  ROLE       : SOC Level 1 Security Analyst', type: 'info' },
+      { text: '  CLEARANCE  : L1-DEFENDER / BLUE-TEAM OPS', type: 'warn' },
+      { text: '  SESSION    : Active | Encrypted | TLS 1.3', type: 'success' },
+      { text: '  LOCATION   : Hyderabad, Telangana, India', type: 'info' },
+      { text: '  TRAINING   : SIEMXPERT SOC Analyst Program', type: 'info' },
+    ];
+    await writeLines(lines, 0, 60);
+
+  // ── about ─────────────────────────────────────────────────────
+  } else if (cmd === 'about') {
+    writeDivider('SECURITY PROFILE');
+    await writeLines([
+      { text: '  NAME   : Immaraju Vasu', type: 'success' },
+      { text: '  TITLE  : Cybersecurity – SOC L1 Analyst (Trainee)', type: 'info' },
+      { text: '  FOCUS  : Threat Detection | Incident Response | SIEM', type: 'info' },
+    ], 0, 55);
+    await writeTerminalLine('', 'info', 200);
+    await typewriterLine('  Highly disciplined defender specializing in continuous', 'info', 220, 14);
+    await typewriterLine('  monitoring, log analysis, and rapid response to threat', 'info', 0, 14);
+    await typewriterLine('  incursions using industry-standard SIEM & EDR platforms.', 'info', 0, 14);
+    await writeTerminalLine('', 'info', 50);
+    await writeLines([
+      { text: '  Training at SIEMXPERT with hands-on labs in:', type: 'muted' },
+      { text: '    ▸ Splunk Enterprise SIEM', type: 'muted' },
+      { text: '    ▸ Microsoft Sentinel', type: 'muted' },
+      { text: '    ▸ Elastic SIEM + Zeek', type: 'muted' },
+      { text: '    ▸ CrowdStrike Falcon EDR', type: 'muted' },
+    ], 50, 50);
+
+  // ── skills ────────────────────────────────────────────────────
+  } else if (cmd === 'skills') {
+    writeDivider('TECHNICAL SKILLS MATRIX');
+    const skills = [
+      { name: 'Alert Triage (SIEM/IDS/IPS)', pct: 88 },
+      { name: 'Log Analysis (Syslog/Windows Events)', pct: 85 },
+      { name: 'Network Traffic Analysis (Wireshark)', pct: 82 },
+      { name: 'Incident Response & Containment', pct: 80 },
+      { name: 'Threat Intelligence (MISP/OSINT)', pct: 78 },
+      { name: 'Vulnerability Assessment', pct: 75 },
+      { name: 'Python Scripting for Security', pct: 72 },
+      { name: 'Cloud Security (Azure Sentinel)', pct: 70 },
+    ];
+    for (let i = 0; i < skills.length; i++) {
+      const s = skills[i];
+      const filled = Math.round(s.pct / 5);
+      const bar = '█'.repeat(filled) + '░'.repeat(20 - filled);
+      await writeTerminalLine(`  ${s.name.padEnd(38)} [${bar}] ${s.pct}%`,
+        s.pct >= 85 ? 'success' : s.pct >= 78 ? 'info' : 'warn', i * 60);
+    }
+
+  // ── projects ──────────────────────────────────────────────────
+  } else if (cmd === 'projects') {
+    writeDivider('PROJECT ARSENAL');
+    const projects = [
+      { id: '01', name: 'Homelab SOC Environment', desc: 'Splunk + PfSense + Windows AD + IDS', status: 'ACTIVE' },
+      { id: '02', name: 'Phishing Email Analyzer', desc: 'Header/domain/URL automated parsing tool', status: 'STABLE' },
+      { id: '03', name: 'SentinelAgent', desc: 'Autonomous log triage & classification bot', status: 'ACTIVE' },
+      { id: '04', name: 'Log Generator', desc: 'Security events testing simulator for SIEM', status: 'STABLE' },
+    ];
+    for (let i = 0; i < projects.length; i++) {
+      const p = projects[i];
+      await writeTerminalLine(`  [${p.id}] ${p.name}`, 'success', i * 80);
+      await writeTerminalLine(`       DESC   : ${p.desc}`, 'info', i * 80 + 20);
+      await writeTerminalLine(`       STATUS : ${p.status}`, p.status === 'ACTIVE' ? 'success' : 'warn', i * 80 + 40);
+      await writeTerminalLine('', 'info', i * 80 + 55);
+    }
+
+  // ── certs ─────────────────────────────────────────────────────
+  } else if (cmd === 'certs') {
+    writeDivider('CERTIFICATIONS & TRAINING');
+    await writeLines([
+      { text: '  ✓ Google Cybersecurity Professional Certificate', type: 'success' },
+      { text: '    Platform : Coursera | Status: COMPLETED', type: 'muted' },
+      { text: '', type: 'info' },
+      { text: '  ✓ SOC L1 Analyst Program – SIEMXPERT', type: 'success' },
+      { text: '    Platform : SIEMXPERT | Status: IN PROGRESS', type: 'warn' },
+      { text: '', type: 'info' },
+      { text: '  ✓ TryHackMe – SOC Level 1 Learning Path', type: 'success' },
+      { text: '    Platform : TryHackMe | Status: COMPLETED', type: 'muted' },
+      { text: '', type: 'info' },
+      { text: '  ○ CompTIA Security+ (Target: 2025)', type: 'warn' },
+      { text: '    Status : PLANNED', type: 'muted' },
+    ], 0, 55);
+
+  // ── tools ─────────────────────────────────────────────────────
+  } else if (cmd === 'tools') {
+    writeDivider('SECURITY TOOLSET');
+    const categories = [
+      { cat: 'SIEM Platforms', tools: 'Splunk · Microsoft Sentinel · Elastic SIEM · IBM QRadar' },
+      { cat: 'EDR / AV', tools: 'CrowdStrike Falcon · Windows Defender · ESET' },
+      { cat: 'Network Analysis', tools: 'Wireshark · tcpdump · Zeek · Nmap' },
+      { cat: 'Threat Intel', tools: 'MISP · VirusTotal · Shodan · AbuseIPDB' },
+      { cat: 'Scripting', tools: 'Python · Bash · PowerShell' },
+      { cat: 'Frameworks', tools: 'MITRE ATT&CK · NIST CSF · ISO 27001' },
+    ];
+    for (let i = 0; i < categories.length; i++) {
+      await writeTerminalLine(`  ▸ ${categories[i].cat}`, 'success', i * 70);
+      await writeTerminalLine(`    ${categories[i].tools}`, 'info', i * 70 + 30);
+    }
+
+  // ── contact ───────────────────────────────────────────────────
+  } else if (cmd === 'contact') {
+    writeDivider('SECURE CONTACT CHANNELS');
+    await writeLines([
+      { text: '  📞 Tel      : +91 9553866278', type: 'success' },
+      { text: '  ✉ Email    : immarajuvasu2@gmail.com', type: 'info' },
+      { text: '  🔗 LinkedIn : linkedin.com/in/immarajuvasu3', type: 'info' },
+      { text: '  🐙 GitHub   : github.com/vasu-soc', type: 'info' },
+      { text: '', type: 'info' },
+      { text: '  All comms are end-to-end encrypted. Response SLA: 24hrs.', type: 'muted' },
+    ], 0, 60);
+
+  // ── status ────────────────────────────────────────────────────
+  } else if (cmd === 'status') {
+    writeDivider('SOC SYSTEM STATUS');
+    const uptime = Math.floor(performance.now() / 1000);
+    const uptimeStr = `${Math.floor(uptime/3600)}h ${Math.floor((uptime%3600)/60)}m ${uptime%60}s`;
+    await writeLines([
+      { text: '  ◉ SIEM Engine         : ONLINE  [Splunk v9.1.2]', type: 'success' },
+      { text: '  ◉ Threat Feed         : LIVE    [MISP 2.4.x sync active]', type: 'success' },
+      { text: '  ◉ EDR Coverage        : 142/142 endpoints reporting', type: 'success' },
+      { text: '  ◉ Firewall Status     : ARMED   [PfSense 2.7.2]', type: 'success' },
+      { text: '  ◉ IDS/IPS             : ACTIVE  [Snort 3.x rulebase loaded]', type: 'success' },
+      { text: '  ◎ Vuln Scanner        : IDLE    [Last scan: 2h ago]', type: 'warn' },
+      { text: '  ◉ Network Monitoring  : ACTIVE  [Zeek + Wireshark taps]', type: 'success' },
+      { text: '', type: 'info' },
+      { text: `  SESSION UPTIME        : ${uptimeStr}`, type: 'muted' },
+      { text: `  THREAT LEVEL          : LOW (No active incidents)`, type: 'success' },
+    ], 0, 55);
+
+  // ── scan [ip] ─────────────────────────────────────────────────
+  } else if (cmd === 'scan') {
+    const target = args[0] || '192.168.1.1';
+    writeDivider(`NMAP SCAN: ${target}`);
+    await writeTerminalLine(`  Initiating port scan on ${target}...`, 'info');
+    const ports = [
+      { port: 22,   svc: 'ssh',     state: 'open',   ver: 'OpenSSH 8.9p1' },
+      { port: 80,   svc: 'http',    state: 'open',   ver: 'Apache 2.4.54' },
+      { port: 443,  svc: 'https',   state: 'open',   ver: 'TLS 1.3' },
+      { port: 3306, svc: 'mysql',   state: 'filtered', ver: 'Unknown' },
+      { port: 8080, svc: 'http-alt',state: 'closed', ver: '' },
+      { port: 445,  svc: 'smb',     state: Math.random()>0.5?'open':'closed', ver: 'Samba 4.x' },
+    ];
+    await writeTerminalLine(`  Starting Nmap 7.94 at ${new Date().toUTCString()}`, 'muted', 300);
+    await writeTerminalLine(`  Nmap scan report for ${target}`, 'muted', 600);
+    for (let i = 0; i < ports.length; i++) {
+      const p = ports[i];
+      const col = p.state === 'open' ? 'warn' : p.state === 'filtered' ? 'error' : 'muted';
+      await writeTerminalLine(
+        `  ${String(p.port+'/tcp').padEnd(10)} ${p.state.padEnd(10)} ${p.svc.padEnd(12)} ${p.ver}`,
+        col, 800 + i * 200
+      );
+    }
+    await writeTerminalLine('  ── Scan complete. Review open ports for exposure risk. ──', 'warn', 800 + ports.length * 200 + 200);
+
+  // ── ping [host] ───────────────────────────────────────────────
+  } else if (cmd === 'ping') {
+    const host = args[0] || '8.8.8.8';
+    writeDivider(`PING: ${host}`);
+    await writeTerminalLine(`  PING ${host}: 56 data bytes`, 'info');
+    for (let i = 0; i < 4; i++) {
+      const ms = (Math.random() * 20 + 8).toFixed(2);
+      await writeTerminalLine(`  64 bytes from ${host}: icmp_seq=${i+1} ttl=116 time=${ms} ms`, 'success', i * 400);
+    }
+    await writeTerminalLine('', 'info', 1650);
+    await writeTerminalLine(`  --- ${host} ping statistics ---`, 'muted', 1700);
+    await writeTerminalLine('  4 packets transmitted, 4 received, 0% packet loss', 'success', 1750);
+
+  // ── mitre [tactic] ────────────────────────────────────────────
+  } else if (cmd === 'mitre') {
+    const tactic = args.join(' ') || '';
+    writeDivider('MITRE ATT&CK FRAMEWORK');
+    const tactics = {
+      'recon':        { id:'TA0043', desc:'Adversary gathers info to plan future operations' },
+      'initial':      { id:'TA0001', desc:'Gaining first foothold via phishing, exploits, etc.' },
+      'execution':    { id:'TA0002', desc:'Running malicious code on a victim system' },
+      'persistence':  { id:'TA0003', desc:'Maintaining foothold across system restarts' },
+      'privilege':    { id:'TA0004', desc:'Gaining higher-level permissions on target systems' },
+      'lateral':      { id:'TA0008', desc:'Moving through the environment to pivot further' },
+      'exfil':        { id:'TA0010', desc:'Stealing data from the target network' },
+      'impact':       { id:'TA0040', desc:'Disrupting availability or destroying systems/data' },
+      'c2':           { id:'TA0011', desc:'Communicating with compromised systems to control them' },
+      'discovery':    { id:'TA0007', desc:'Learning about the environment (hosts, users, configs)' },
+    };
+    if (tactic && tactics[tactic]) {
+      const t = tactics[tactic];
+      await writeTerminalLine(`  TACTIC : ${tactic.toUpperCase()}`, 'success');
+      await writeTerminalLine(`  ID     : ${t.id}`, 'info');
+      await writeTerminalLine(`  DESC   : ${t.desc}`, 'info');
+    } else {
+      await writeTerminalLine('  Available tactics to query:', 'info');
+      for (const [key, val] of Object.entries(tactics)) {
+        await writeTerminalLine(`  mitre ${key.padEnd(12)} – ${val.id}  ${val.desc.slice(0,44)}...`, 'muted', 0);
+      }
+      await writeTerminalLine("", 'info');
+      await writeTerminalLine("  Example: mitre lateral", 'warn');
+    }
+
+  // ── banner ────────────────────────────────────────────────────
+  } else if (cmd === 'banner') {
+    const art = [
+      '  ██╗   ██╗ █████╗ ███████╗██╗   ██╗',
+      '  ██║   ██║██╔══██╗██╔════╝██║   ██║',
+      '  ██║   ██║███████║███████╗██║   ██║',
+      '  ╚██╗ ██╔╝██╔══██║╚════██║██║   ██║',
+      '   ╚████╔╝ ██║  ██║███████║╚██████╔╝',
+      '    ╚═══╝  ╚═╝  ╚═╝╚══════╝ ╚═════╝ ',
+      '  SOC L1 ANALYST — THREAT OPS CENTER',
+      '  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄',
+    ];
+    for (let i = 0; i < art.length; i++) {
+      await writeTerminalLine(art[i], i < 6 ? 'success' : 'warn', i * 50);
+    }
+
+  // ── date ──────────────────────────────────────────────────────
+  } else if (cmd === 'date') {
+    const now = new Date();
+    await writeLines([
+      { text: `  UTC   : ${now.toUTCString()}`, type: 'success' },
+      { text: `  LOCAL : ${now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST`, type: 'info' },
+      { text: `  EPOCH : ${Math.floor(now.getTime() / 1000)}`, type: 'muted' },
+    ], 0, 60);
+
+  // ── history ───────────────────────────────────────────────────
+  } else if (cmd === 'history') {
+    writeDivider('COMMAND HISTORY');
+    if (termHistory.length === 0) {
+      await writeTerminalLine('  No commands in history yet.', 'muted');
+    } else {
+      const recent = termHistory.slice(-10);
+      for (let i = 0; i < recent.length; i++) {
+        await writeTerminalLine(`  ${String(i + 1).padStart(3)}  ${recent[i]}`, 'info', i * 40);
+      }
+    }
+
+  // ── sudo ──────────────────────────────────────────────────────
+  } else if (cmd === 'sudo') {
+    await writeTerminalLine('  [sudo] password for guest: ', 'warn');
+    await writeTerminalLine('  Sorry, user guest is not in the sudoers file.', 'error', 600);
+    await writeTerminalLine('  This incident will be reported to the SOC team. 🛡', 'warn', 900);
+    sfx.playAlert();
+
+  // ── matrix ────────────────────────────────────────────────────
+  } else if (cmd === 'matrix') {
+    if (matrixModeInterval) {
+      clearInterval(matrixModeInterval);
+      matrixModeInterval = null;
+      document.body.classList.remove('matrix-mode');
+      await writeTerminalLine('  [MATRIX MODE] Deactivated. Welcome back.', 'success');
+    } else {
+      document.body.classList.add('matrix-mode');
+      await writeTerminalLine('  [MATRIX MODE] ACTIVATED — Type "matrix" again to exit.', 'warn');
+      sfx.playAlert();
+      // Increase data stream speed + green tint
+      matrixModeInterval = setInterval(() => {
+        streams.forEach(s => {
+          s.y += 0.5; // extra speed boost
+        });
+      }, 16);
+    }
+
+  // ── alert ─────────────────────────────────────────────────────
+  } else if (cmd === 'alert') {
+    await triggerSecurityInvasion();
+
+  // ── clear ─────────────────────────────────────────────────────
+  } else if (cmd === 'clear') {
+    const out = document.getElementById('terminalOutput');
+    if (out) out.innerHTML = '';
+
+  // ── exit ──────────────────────────────────────────────────────
+  } else if (cmd === 'exit') {
+    await writeTerminalLine('  Closing secure terminal session...', 'warn');
+    setTimeout(() => toggleTerminalWindow(), 600);
+
+  // ── unknown command ───────────────────────────────────────────
+  } else {
+    await writeTerminalLine(`  bash: ${rawCmd}: command not found`, 'error');
+    await writeTerminalLine("  Type 'help' for the full command list.", 'muted', 80);
+    sfx.playBlip(250, 'sawtooth', 0.15, 0.05);
+  }
+}
+
+async function triggerSecurityInvasion() {
+  const term = document.getElementById('cyberTerminal');
+  const statusInd = document.querySelector('.status-indicator');
+  const statusTxt = document.querySelector('.status-text');
+  const el = document.getElementById('liveAlertFeed');
+  
+  sfx.playAlert();
+  if (term) term.classList.remove('collapsed');
+  if (term) term.classList.add('alert-state');
+  if (statusInd) statusInd.classList.add('critical');
+  if (statusTxt) statusTxt.textContent = 'CRITICAL:// ALERT BREACH';
+  if (el) el.textContent = 'ALERT:// HOST EXPLOITED. MEMORY DUMP CORRUPTED.';
+  
+  writeDivider('INCIDENT RESPONSE INITIATED');
+  const alertLines = [
+    { text: '  [!!!] CRITICAL ALERT — CVE-2026-X01 DETECTED', type: 'error' },
+    { text: '  VECTOR  : Memory corruption + lateral movement via SMB', type: 'error' },
+    { text: '  STATUS  : CONTAINMENT ISOLATION ACTIVE', type: 'warn' },
+  ];
+  await writeLines(alertLines, 0, 60);
+
+  const steps = [
+    { t: '  [1/5] Mapping live network topology graph...', type: 'info', d: 700 },
+    { t: '  [2/5] Compromised node found: IP 192.168.1.104 (WS-FIN-04)', type: 'error', d: 1400 },
+    { t: '  [3/5] Pushing firewall block ACL to perimeter router...', type: 'warn', d: 2200 },
+    { t: '  [4/5] EDR isolation API call → WS-FIN-04 quarantined.', type: 'warn', d: 3000 },
+    { t: '  [5/5] Memory dump collected. DFIR team notified.', type: 'info', d: 3800 },
+    { t: '  ─────────────────────────────────────────────────', type: 'muted', d: 4500 },
+    { t: '  RESULT: Containment SUCCESSFUL. No further lateral spread.', type: 'success', d: 5000 },
+    { t: '  Systems returning to SECURED state. Incident logged.', type: 'success', d: 5600 },
+  ];
+
+  steps.forEach(s => {
+    setTimeout(() => {
+      writeTerminalLine(s.t, s.type);
+      if (s.type === 'success') sfx.playSuccess();
+      else sfx.playBlip(500, 'sine', 0.08, 0.03);
+      if (s.t.includes('Incident logged')) {
+        if (term) term.classList.remove('alert-state');
+        if (statusInd) statusInd.classList.remove('critical');
+        if (statusTxt) statusTxt.textContent = 'SYSTEM STATUS: SECURED';
+        if (el) el.textContent = 'SUCCESS:// Breach contained. All logs cleared.';
+      }
+    }, s.d);
+  });
+}
+
+
 
 
 // ─── NAV: SCROLL SHRINK + ACTIVE LINK ──────────────────────────
@@ -490,7 +1366,7 @@ async function submitForm(e) {
 
     // 3. Attempt Backend Sync
     try {
-      await fetch('http://localhost:5000/api/contact', {
+      await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -568,7 +1444,7 @@ async function handleAdminLogin(e) {
 
   // 2. Server Fallback
   try {
-    const response = await fetch('http://localhost:5000/api/admin/login', {
+    const response = await fetch('/api/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: emailInput, password: passwordInput })
@@ -640,7 +1516,7 @@ async function fetchMessages() {
 
   // 2. Try to supplement from Backend
   try {
-    const response = await fetch('http://localhost:5000/api/contact');
+    const response = await fetch('/api/contact');
     if (response.ok) {
       const serverMsgs = await response.json();
       const uniqueServerMsgs = serverMsgs.filter(s =>
@@ -738,7 +1614,13 @@ document.head.insertAdjacentHTML('beforeend', `
 `);
 
 document.querySelectorAll('.liquid-btn,.stat-bubble,.skill-card,.glass-card').forEach(el => {
-  el.addEventListener('click', (e) => createTouchRipple(el, e));
+  el.addEventListener('click', (e) => {
+    createTouchRipple(el, e);
+    if (typeof sfx !== 'undefined') sfx.playClick();
+  });
+  el.addEventListener('mouseenter', () => {
+    if (typeof sfx !== 'undefined') sfx.playHover();
+  });
 });
 
 
@@ -842,8 +1724,9 @@ function toggleTheme() {
   htmlEl.setAttribute('data-theme', next);
   localStorage.setItem('soc-theme', next);
 
-  // Update bubble canvas opacity dynamically
+  // Update cyber canvas opacity dynamically
   canvas.style.opacity = next === 'light' ? '0.4' : '1';
+  sfx.playClick();
 }
 
 // Inject burst keyframe once
@@ -921,5 +1804,8 @@ function closeBadgeModalOnOverlay(e) {
 
 
 console.log('%c🛡 SOC L1 Portfolio Loaded', 'color:#00d4ff;font-size:16px;font-weight:bold;');
-console.log('%cBuilt with iOS liquid bubble feel & security passion.', 'color:#9b5de5;font-size:12px;');
-console.log('%c💡 Tip: Press Alt+T to toggle Light/Dark theme', 'color:#9b5de5;font-size:11px;');
+console.log('%cBuilt with premium Cyber Security Operations Center theme & security passion.', 'color:#bd00ff;font-size:12px;');
+console.log('%c💡 Tip: Press Alt+T to toggle Light/Dark theme', 'color:#bd00ff;font-size:11px;');
+
+// Initialize operations ticker
+startLiveThreatFeed();

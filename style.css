@@ -4,38 +4,39 @@
 
 /* ---------- CSS VARIABLES ---------- */
 :root {
-    --bg-deep: #020b18;
-    --bg-base: #060f1f;
-    --bg-card: rgba(255, 255, 255, 0.04);
-    --bg-card-hover: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.10);
-    --glass-blur: blur(12px);
+    --bg-deep: #01050e;
+    --bg-base: #030a1a;
+    --bg-card: rgba(3, 14, 30, 0.65);
+    --bg-card-hover: rgba(3, 20, 45, 0.85);
+    --glass-border: rgba(0, 229, 255, 0.15);
+    --glass-blur: blur(16px);
 
-    --cyan: #00d4ff;
+    --cyan: #00e5ff;
     --cyan-2: #00b4d8;
-    --blue: #4361ee;
-    --blue-2: #3a86ff;
-    --purple: #9b5de5;
-    --orange: #f77f00;
-    --green: #06d6a0;
-    --pink: #ff6b9d;
-    --red: #ef233c;
+    --blue: #2979ff;
+    --blue-2: #3d5afe;
+    --purple: #d500f9;
+    --orange: #ff9100;
+    --green: #00e676;
+    --pink: #ff4081;
+    --red: #ff1744;
 
     --text-primary: #f0f8ff;
-    --text-secondary: rgba(240, 248, 255, 0.65);
-    --text-muted: rgba(240, 248, 255, 0.35);
+    --text-secondary: rgba(240, 248, 255, 0.70);
+    --text-muted: rgba(240, 248, 255, 0.40);
 
-    --radius-sm: 12px;
-    --radius-md: 20px;
-    --radius-lg: 32px;
-    --radius-xl: 48px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 28px;
 
-    --shadow-glow-cyan: 0 0 40px rgba(0, 212, 255, 0.25);
-    --shadow-glow-blue: 0 0 40px rgba(67, 97, 238, 0.25);
-    --shadow-glow-purple: 0 0 40px rgba(155, 93, 229, 0.25);
+    --shadow-glow-cyan: 0 0 25px rgba(0, 229, 255, 0.35);
+    --shadow-glow-blue: 0 0 25px rgba(41, 121, 255, 0.35);
+    --shadow-glow-purple: 0 0 25px rgba(213, 0, 249, 0.35);
+    --shadow-glow-red: 0 0 25px rgba(255, 23, 68, 0.4);
 
-    --transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    --transition-smooth: all 0.3s ease;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-smooth: all 0.25s ease;
 }
 
 /* ---------- LIGHT THEME VARIABLES ---------- */
@@ -322,7 +323,7 @@ select {
     border-color: rgba(239, 35, 60, 0.12);
 }
 
-[data-theme="light"] #bubbleCanvas {
+[data-theme="light"] #cyberCanvas {
     opacity: 0.4;
 }
 
@@ -595,8 +596,8 @@ select {
     transform: translateX(66px) scaleX(1.2);
 }
 
-/* ---------- BUBBLE CANVAS ---------- */
-#bubbleCanvas {
+/* ---------- CYBER CANVAS ---------- */
+#cyberCanvas {
     position: fixed;
     top: 0;
     left: 0;
@@ -614,12 +615,13 @@ select {
     -webkit-backdrop-filter: var(--glass-blur);
     border-radius: var(--radius-lg);
     transition: var(--transition-smooth);
+    position: relative;
 }
 
 .glass-card:hover {
     background: var(--bg-card-hover);
-    border-color: rgba(0, 212, 255, 0.2);
-    transform: translateY(-4px);
+    border-color: rgba(0, 229, 255, 0.25);
+    transform: translateY(-3px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), var(--shadow-glow-cyan);
 }
 
@@ -818,19 +820,32 @@ select {
 .logo-bubble {
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--cyan), var(--blue));
-    border-radius: 50%;
+    background: transparent;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.9rem;
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.25);
+    transition: var(--transition);
 }
 
 .logo-bubble.sm {
     width: 28px;
     height: 28px;
-    font-size: 0.75rem;
+    border-radius: 6px;
+}
+
+.nav-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1);
+    transition: transform 0.4s ease;
+}
+
+.nav-logo:hover .nav-logo-img {
+    transform: scale(1.2) rotate(5deg);
 }
 
 .nav-logo .accent {
@@ -4961,3 +4976,579 @@ select {
 }
 
 /* Avatar bubble ring responsive styles are now handled in the main responsive block above */
+
+/* ============================================================
+   CYBER THREAT OPERATIONS HUD STYLES
+   ============================================================ */
+
+/* Tactical Grid Background Overlay */
+.cyber-grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+    background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center center;
+    opacity: 0.75;
+    animation: gridScroll 24s linear infinite;
+}
+
+[data-theme="light"] .cyber-grid-overlay {
+    background-image: 
+        linear-gradient(rgba(0, 80, 160, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 80, 160, 0.02) 1px, transparent 1px);
+    opacity: 0.5;
+}
+
+/* CRT Monitor Scanline effect */
+.crt-scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.12) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 6px 100%;
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+}
+
+[data-theme="light"] .crt-scanlines {
+    display: none;
+}
+
+/* Tactical Operations Dashboard in Hero */
+.tac-ops-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 550px;
+    margin: 20px auto;
+    padding: 14px 20px;
+    background: rgba(3, 14, 30, 0.85);
+    border: 1px solid var(--cyan);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-glow-cyan), inset 0 0 15px rgba(0, 229, 255, 0.1);
+    backdrop-filter: var(--glass-blur);
+    align-items: center;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.tac-ops-dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    animation: scanLineH 2s linear infinite;
+}
+
+@keyframes scanLineH {
+    0% { transform: translateY(-5px); }
+    100% { transform: translateY(60px); }
+}
+
+.ops-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--green);
+    box-shadow: 0 0 10px var(--green);
+    animation: indicatorPulse 1.8s infinite;
+}
+
+.status-indicator.critical {
+    background-color: var(--red);
+    box-shadow: 0 0 10px var(--red);
+    animation: indicatorPulseFast 0.6s infinite;
+}
+
+@keyframes indicatorPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+@keyframes indicatorPulseFast {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.live-ticker-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    color: var(--text-secondary);
+    border-top: 1px dashed rgba(0, 229, 255, 0.2);
+    padding-top: 8px;
+    margin-top: 4px;
+}
+
+.ticker-label {
+    color: var(--cyan);
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.ticker-content {
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    color: var(--text-primary);
+    transition: opacity 0.2s ease;
+}
+
+/* Sound Toggle */
+.sound-toggle {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+}
+
+.sound-toggle:hover {
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.08);
+    border-color: rgba(0, 229, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+}
+
+.sound-toggle.muted {
+    color: var(--text-muted);
+}
+
+/* Cyber Terminal Widget */
+.cyber-terminal-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 520px;
+    height: 440px;
+    background: rgba(1, 5, 14, 0.96);
+    border: 1.5px solid var(--cyan);
+    border-radius: 10px;
+    box-shadow: var(--shadow-glow-cyan), 0 0 40px rgba(0, 229, 255, 0.08);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.4s ease, border-color 0.3s ease;
+    backdrop-filter: blur(12px);
+    resize: both;
+    min-width: 340px;
+    min-height: 240px;
+    max-width: 95vw;
+    max-height: 80vh;
+}
+
+.cyber-terminal-widget.collapsed {
+    height: 36px !important;
+    min-height: 36px !important;
+    transform: translateY(0);
+    overflow: hidden;
+}
+
+.cyber-terminal-widget.alert-state {
+    border-color: var(--red) !important;
+    box-shadow: var(--shadow-glow-red) !important;
+}
+
+.terminal-header {
+    height: 36px;
+    background: rgba(3, 14, 30, 0.9);
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.cyber-terminal-widget.alert-state .terminal-header {
+    border-bottom-color: rgba(255, 23, 68, 0.3);
+}
+
+.terminal-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--cyan);
+    font-weight: 700;
+}
+
+.cyber-terminal-widget.alert-state .terminal-title {
+    color: var(--red);
+}
+
+.terminal-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.term-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--green);
+    box-shadow: 0 0 5px var(--green);
+}
+
+.cyber-terminal-widget.alert-state .term-status-dot {
+    background-color: var(--red);
+    box-shadow: 0 0 5px var(--red);
+    animation: indicatorPulseFast 0.3s infinite;
+}
+
+.term-ctrl-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.term-ctrl-btn:hover {
+    color: var(--cyan);
+}
+
+.terminal-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 14px;
+    overflow: hidden;
+}
+
+.terminal-output {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 8px;
+    padding-right: 6px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+/* Custom scrollbar for terminal */
+.terminal-output::-webkit-scrollbar {
+    width: 4px;
+}
+.terminal-output::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+.terminal-output::-webkit-scrollbar-thumb {
+    background: var(--cyan);
+    border-radius: 2px;
+}
+
+.term-line {
+    line-height: 1.35;
+    word-break: break-all;
+}
+
+.term-line.cmd {
+    color: var(--text-primary);
+}
+
+.term-line.info {
+    color: var(--cyan);
+}
+
+.term-line.success {
+    color: var(--green);
+}
+
+.term-line.error {
+    color: var(--red);
+    font-weight: 600;
+}
+
+.term-line.warn {
+    color: var(--orange);
+}
+
+.terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-top: 1px dashed rgba(0, 229, 255, 0.15);
+    padding-top: 8px;
+    flex-shrink: 0;
+}
+
+.terminal-prompt {
+    color: var(--purple);
+    font-weight: 600;
+}
+
+#terminalInput {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Card cyber decoration (Corner Brackets) */
+.glass-card {
+    position: relative;
+    border: 1px solid rgba(0, 229, 255, 0.12);
+    border-radius: var(--radius-md);
+    background: rgba(3, 14, 30, 0.55);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    overflow: visible;
+}
+
+.glass-card::before, .glass-card::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 1.5px solid transparent;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.glass-card::before {
+    top: -1px;
+    left: -1px;
+    border-top-color: rgba(0, 229, 255, 0.3);
+    border-left-color: rgba(0, 229, 255, 0.3);
+}
+
+.glass-card::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom-color: rgba(0, 229, 255, 0.3);
+    border-right-color: rgba(0, 229, 255, 0.3);
+}
+
+.glass-card:hover {
+    border-color: rgba(0, 229, 255, 0.35);
+    box-shadow: var(--shadow-glow-cyan);
+}
+
+.glass-card:hover::before {
+    border-top-color: var(--cyan);
+    border-left-color: var(--cyan);
+    width: 14px;
+    height: 14px;
+}
+
+.glass-card:hover::after {
+    border-bottom-color: var(--cyan);
+    border-right-color: var(--cyan);
+    width: 14px;
+    height: 14px;
+}
+
+/* Glitch Heading Effect */
+.gradient-text {
+    position: relative;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+.section-title:hover .gradient-text {
+    animation: glitchText 0.4s infinite;
+}
+
+@keyframes glitchText {
+    0% {
+        text-shadow: 2px -2px 0 var(--red), -2px 2px 0 var(--cyan);
+    }
+    25% {
+        text-shadow: -2px 2px 0 var(--red), 2px -2px 0 var(--cyan);
+    }
+    50% {
+        text-shadow: 2px 2px 0 var(--red), -2px -2px 0 var(--cyan);
+    }
+    75% {
+        text-shadow: -2px -2px 0 var(--red), 2px 2px 0 var(--cyan);
+    }
+    100% {
+        text-shadow: 2px -2px 0 var(--red), -2px 2px 0 var(--cyan);
+    }
+}
+
+/* Corporate Theme (Light Theme overrides) */
+[data-theme="light"] .glass-card {
+    background: rgba(255, 255, 255, 0.88) !important;
+    border-color: rgba(0, 100, 180, 0.15) !important;
+    box-shadow: 0 4px 20px rgba(0, 80, 160, 0.06) !important;
+}
+
+[data-theme="light"] .glass-card::before {
+    border-top-color: rgba(0, 100, 180, 0.25);
+    border-left-color: rgba(0, 100, 180, 0.25);
+}
+
+[data-theme="light"] .glass-card::after {
+    border-bottom-color: rgba(0, 100, 180, 0.25);
+    border-right-color: rgba(0, 100, 180, 0.25);
+}
+
+[data-theme="light"] .glass-card:hover {
+    border-color: rgba(0, 100, 180, 0.4) !important;
+    box-shadow: 0 10px 30px rgba(0, 80, 160, 0.12), 0 0 15px rgba(0, 170, 220, 0.15) !important;
+}
+
+[data-theme="light"] .glass-card:hover::before {
+    border-top-color: var(--cyan-2);
+    border-left-color: var(--cyan-2);
+}
+
+[data-theme="light"] .glass-card:hover::after {
+    border-bottom-color: var(--cyan-2);
+    border-right-color: var(--cyan-2);
+}
+
+[data-theme="light"] .tac-ops-dashboard {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--cyan-2);
+    box-shadow: 0 4px 25px rgba(0, 80, 160, 0.08);
+}
+
+[data-theme="light"] .cyber-terminal-widget {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: var(--cyan-2);
+    box-shadow: 0 10px 40px rgba(0, 80, 160, 0.15);
+}
+
+[data-theme="light"] .terminal-header {
+    background: rgba(238, 244, 251, 0.95);
+    border-bottom-color: rgba(0, 100, 180, 0.15);
+}
+
+[data-theme="light"] .terminal-input-row {
+    border-top-color: rgba(0, 100, 180, 0.1);
+}
+
+[data-theme="light"] #terminalInput {
+    color: #0a1628;
+}
+
+/* Cyber status flashing alerts in terminal alert state */
+@keyframes terminalAlertFlash {
+    0%, 100% { background: rgba(1, 5, 14, 0.95); }
+    50% { background: rgba(20, 3, 5, 0.98); }
+}
+.cyber-terminal-widget.alert-state:not(.collapsed) {
+    animation: terminalAlertFlash 1s infinite;
+}
+
+/* Sound indicator animate when playing */
+@keyframes audioWave {
+    0%, 100% { transform: scaleY(0.7); }
+    50% { transform: scaleY(1.3); }
+}
+.sound-toggle:not(.muted) i {
+    animation: none;
+}
+
+/* Missing textFlicker keyframe */
+@keyframes textFlicker {
+    0% { opacity: 1; }
+    100% { opacity: 0.85; }
+}
+
+@keyframes gridScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+@media (max-width: 480px) {
+    .cyber-terminal-widget {
+        width: calc(100vw - 30px);
+        right: 15px;
+        bottom: 15px;
+    }
+    .tac-ops-dashboard {
+        font-size: 0.72rem;
+        padding: 10px 14px;
+    }
+}
+
+/* ── Enhanced Terminal Lines ───────────────────────────────── */
+.term-line.divider {
+    color: rgba(0, 229, 255, 0.35);
+    font-size: 0.72rem;
+    letter-spacing: 0.5px;
+    margin: 4px 0;
+    user-select: none;
+}
+
+.term-line.muted {
+    color: rgba(180, 200, 220, 0.38);
+    font-size: 0.8rem;
+}
+
+.term-line.warn {
+    color: #ffb300;
+}
+
+/* terminal-body and terminal-output sizing now managed in main block above */
+
+/* ── Matrix Mode ────────────────────────────────────────────── */
+body.matrix-mode #cyberCanvas {
+    filter: hue-rotate(100deg) saturate(3) brightness(1.4);
+    transition: filter 0.5s ease;
+}
+body.matrix-mode .cyber-grid-overlay {
+    background-image:
+        linear-gradient(rgba(0, 255, 70, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 70, 0.06) 1px, transparent 1px);
+}
+body.matrix-mode .crt-scanlines {
+    opacity: 0.7;
+}
