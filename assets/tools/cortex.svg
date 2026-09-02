@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="cortexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B2B"/>
+      <stop offset="100%" stop-color="#FF3E3E"/>
+    </linearGradient>
+    <filter id="cortexGlow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <g filter="url(#cortexGlow)">
+    <polygon points="100,30 155,62 155,128 100,160 45,128 45,62" fill="rgba(255,107,43,0.2)" stroke="url(#cortexGrad)" stroke-width="6"/>
+    <polygon points="100,58 130,74 130,110 100,126 70,110 70,74" fill="rgba(255,62,62,0.3)" stroke="#FF6B2B" stroke-width="3"/>
+    <circle cx="100" cy="92" r="12" fill="#FF6B2B"/>
+  </g>
+  <text x="100" y="186" font-family="monospace" font-size="14" font-weight="bold" fill="#FF6B2B" text-anchor="middle">CORTEX XSOAR</text>
+</svg>

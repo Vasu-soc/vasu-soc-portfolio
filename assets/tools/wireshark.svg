@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="wsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1679A7"/>
+      <stop offset="100%" stop-color="#00E5FF"/>
+    </linearGradient>
+    <filter id="wsGlow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <g filter="url(#wsGlow)">
+    <path d="M40 140 Q60 80 100 35 Q110 70 105 90 Q145 60 160 140 Z" fill="rgba(22,121,167,0.3)" stroke="url(#wsGrad)" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M40 140 L160 140" stroke="url(#wsGrad)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="100" cy="90" r="8" fill="#00E5FF"/>
+  </g>
+  <text x="100" y="186" font-family="monospace" font-size="13" font-weight="bold" fill="#1679A7" text-anchor="middle">WIRESHARK</text>
+</svg>

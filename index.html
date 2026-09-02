@@ -11,9 +11,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="enhancements.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
@@ -24,6 +25,22 @@
     <div class="cyber-grid-overlay"></div>
     <div class="crt-scanlines"></div>
     <canvas id="cyberCanvas"></canvas>
+
+    <!-- Floating Background SIEM, SOAR, EDR, & Security Tool Logos -->
+    <div class="cyber-bg-siem-layer" id="cyberBgSiemLayer" aria-hidden="true">
+        <div class="bg-tool-item tool-splunk" style="top: 12%; left: 6%;"><img src="assets/tools/splunk.svg" alt="Splunk SIEM" /><span class="bg-tool-tag">SPLUNK // SIEM</span></div>
+        <div class="bg-tool-item tool-sentinel" style="top: 24%; right: 6%;"><img src="assets/tools/sentinel.svg" alt="Microsoft Sentinel" /><span class="bg-tool-tag">SENTINEL // SOAR</span></div>
+        <div class="bg-tool-item tool-cortex" style="top: 42%; left: 4%;"><img src="assets/tools/cortex.svg" alt="Cortex XSOAR" /><span class="bg-tool-tag">CORTEX // XSOAR</span></div>
+        <div class="bg-tool-item tool-qradar" style="top: 58%; right: 6%;"><img src="assets/tools/qradar.svg" alt="IBM QRadar" /><span class="bg-tool-tag">QRADAR // SIEM</span></div>
+        <div class="bg-tool-item tool-crowdstrike" style="top: 74%; left: 7%;"><img src="assets/tools/crowdstrike.svg" alt="CrowdStrike Falcon" /><span class="bg-tool-tag">CROWDSTRIKE // EDR</span></div>
+        <div class="bg-tool-item tool-elastic" style="top: 16%; left: 80%;"><img src="assets/tools/elastic.svg" alt="Elastic SIEM" /><span class="bg-tool-tag">ELASTIC // SIEM</span></div>
+        <div class="bg-tool-item tool-wireshark" style="top: 34%; left: 45%;"><img src="assets/tools/wireshark.svg" alt="Wireshark" /><span class="bg-tool-tag">WIRESHARK // PCAP</span></div>
+        <div class="bg-tool-item tool-thehive" style="top: 86%; right: 14%;"><img src="assets/tools/thehive.svg" alt="TheHive SIRP" /><span class="bg-tool-tag">THEHIVE // SOAR</span></div>
+        <div class="bg-tool-item tool-wazuh" style="top: 50%; left: 88%;"><img src="assets/tools/wazuh.svg" alt="Wazuh XDR" /><span class="bg-tool-tag">WAZUH // XDR</span></div>
+        <div class="bg-tool-item tool-zeek" style="top: 92%; left: 4%;"><img src="assets/tools/zeek.svg" alt="Zeek NIDS" /><span class="bg-tool-tag">ZEEK // NIDS</span></div>
+    </div>
+
+    <div class="nav-menu-backdrop" id="navBackdrop"></div>
 
     <!-- ========== NAV ========== -->
     <nav class="glass-nav" id="navbar">
@@ -182,7 +199,7 @@
     <!-- ========== ABOUT ========== -->
     <section id="about" class="section about-section">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header left-align">
                 <div class="section-tag">01 / About Me</div>
                 <h2 class="section-title">Who Am <span class="gradient-text">I?</span></h2>
             </div>
@@ -335,82 +352,41 @@
                             <div class="badge-platform-sub">Cybersecurity Training Platform</div>
                         </div>
                         <a href="https://tryhackme.com/p/Vasu3" target="_blank" rel="noopener"
-                            class="badge-external-link">
+                            class="badge-external-link" title="Open TryHackMe Profile">
                             <i class="fas fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <div class="badge-iframe-wrap"
-                        style="background: #fff; height: 180px; display: flex; align-items: center; justify-content: center; border-radius: 12px; overflow: hidden;">
-                        <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=4617503"
-                            style='border:none; width: 100%; height: 100%;' scrolling="no"
-                            title="TryHackMe Public Profile">
-                        </iframe>
+
+                    <div class="kc7-profile-display" style="border-color: rgba(255, 62, 62, 0.25);">
+                        <div class="kc7-avatar-ring">
+                            <div class="kc7-avatar" style="background: linear-gradient(135deg, #ff3e3e, #1a0b12);">
+                                <i class="fas fa-user-ninja"></i>
+                            </div>
+                        </div>
+                        <div class="kc7-info">
+                            <h4 class="kc7-name">Vasu3 <span class="badge-rank-tag">[0xD]</span></h4>
+                            <p class="kc7-handle">Rank #17,931 · Top 1%</p>
+                            <div class="kc7-stats-row">
+                                <div class="kc7-stat"><i class="fas fa-fire thm-color"></i> <span>270+ Days</span></div>
+                                <div class="kc7-stat"><i class="fas fa-award thm-color"></i> <span>29 Badges</span></div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="badge-card-actions">
+                        <a href="https://tryhackme.com/p/Vasu3" target="_blank" rel="noopener"
+                            class="liquid-btn primary sm thm-visit-btn"
+                            style="background: linear-gradient(135deg, #ff3e3e, #a81c1c); box-shadow: 0 8px 32px rgba(255, 62, 62, 0.25);">
+                            <i class="fas fa-external-link-alt"></i> View THM Profile
+                        </a>
+                        <button class="thm-expand-btn" id="thmExpandBtn" onclick="toggleThmDetails()" title="Explore Badges & Streaks">
+                            <i class="fas fa-medal"></i> Badges (8) <i class="fas fa-chevron-down expand-arrow"></i>
+                        </button>
+                    </div>
+
                     <div class="badge-card-footer">
-                        <span class="badge-pill thm-color"><i class="fas fa-circle-check"></i> SOC L1 Path
-                            Completed</span>
+                        <span class="badge-pill thm-color"><i class="fas fa-circle-check"></i> SOC L1 Path</span>
                         <span class="badge-pill thm-color"><i class="fas fa-flag"></i> 50+ Rooms</span>
-                    </div>
-
-                    <!-- Streak Badges Row -->
-                    <div class="streak-badges-row">
-                        <div class="streak-label">Streak Achievements:</div>
-                        <div class="streaks-container">
-                            <div class="streak-item-mini" title="3 Day Streak"
-                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/3-day-streak?sharerId=680791c75f48b4b336eb81f0')">
-                                <div class="streak-icon-fire"><i class="fas fa-fire"></i></div>
-                                <span>3 Days</span>
-                            </div>
-                            <div class="streak-item-mini" title="7 Day Streak"
-                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/7-day-streak?sharerId=680791c75f48b4b336eb81f0')">
-                                <div class="streak-icon-fire"><i class="fas fa-fire"></i></div>
-                                <span>7 Days</span>
-                            </div>
-                            <div class="streak-item-mini" title="30 Day Streak"
-                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/30-day-streak?sharerId=680791c75f48b4b336eb81f0')">
-                                <div class="streak-icon-fire"><i class="fas fa-fire-gold"></i><i
-                                        class="fas fa-fire"></i></div>
-                                <span>30 Days</span>
-                            </div>
-                            <div class="streak-item-mini" title="90 Day Streak"
-                                onclick="openBadgeModal('assets/certs/thm_90_day_streak.png')">
-                                <div class="streak-icon-fire"><i class="fas fa-fire"></i><i class="fas fa-bolt"></i>
-                                </div>
-                                <span>90 Days</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Topic Badges Row -->
-                    <div class="streak-badges-row">
-                        <div class="streak-label">Learning Badges:</div>
-                        <div class="streaks-container">
-                            <div class="streak-item-mini" title="Network Fundamentals"
-                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/network-fundamentals?sharerId=680791c75f48b4b336eb81f0')">
-                                <div class="streak-icon-topic"><i class="fas fa-network-wired"></i></div>
-                                <span>Network</span>
-                            </div>
-                            <div class="streak-item-mini" title="Pre-Security"
-                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/pre-security?sharerId=680791c75f48b4b336eb81f0')">
-                                <div class="streak-icon-topic"><i class="fas fa-shield-halved"></i></div>
-                                <span>Pre-Security</span>
-                            </div>
-                            <div class="streak-item-mini" title="Introduction to Cybersecurity"
-                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/intro-to-cyber-security?sharerId=680791c75f48b4b336eb81f0')">
-                                <div class="streak-icon-topic"><i class="fas fa-user-shield"></i></div>
-                                <span>Intro Cyber</span>
-                            </div>
-                            <div class="streak-item-mini" title="Advent of Cyber 2025"
-                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/advent-of-cyber-2025?sharerId=680791c75f48b4b336eb81f0')">
-                                <div class="streak-icon-topic"><i class="fas fa-tree"></i></div>
-                                <span>AoC 25</span>
-                            </div>
-                            <div class="streak-item-mini" title="World Wide Web"
-                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/world-wide-web?sharerId=680791c75f48b4b336eb81f0')">
-                                <div class="streak-icon-topic"><i class="fas fa-globe"></i></div>
-                                <span>Web</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -506,6 +482,96 @@
                     </div>
                 </div>
 
+            </div>
+
+            <!-- TryHackMe Interactive Badges & Streaks Showcase Drawer -->
+            <div class="thm-details-drawer glass-card" id="thmDetailsDrawer">
+                <div class="drawer-header">
+                    <div class="drawer-title">
+                        <i class="fas fa-fire thm-color"></i>
+                        <span>TryHackMe <strong>Badges &amp; Streaks Explorer</strong></span>
+                    </div>
+                    <button class="drawer-close-btn" onclick="toggleThmDetails()" title="Close drawer">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="drawer-grid">
+                    <!-- Streak Badges Block -->
+                    <div class="drawer-block">
+                        <div class="drawer-block-label"><i class="fas fa-bolt"></i> Streak Milestones</div>
+                        <div class="streaks-container">
+                            <div class="streak-item-mini" title="3 Day Streak"
+                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/3-day-streak?sharerId=680791c75f48b4b336eb81f0')">
+                                <div class="streak-icon-fire"><i class="fas fa-fire"></i></div>
+                                <span>3 Days</span>
+                            </div>
+                            <div class="streak-item-mini" title="7 Day Streak"
+                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/7-day-streak?sharerId=680791c75f48b4b336eb81f0')">
+                                <div class="streak-icon-fire"><i class="fas fa-fire"></i></div>
+                                <span>7 Days</span>
+                            </div>
+                            <div class="streak-item-mini" title="30 Day Streak"
+                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/30-day-streak?sharerId=680791c75f48b4b336eb81f0')">
+                                <div class="streak-icon-fire"><i class="fas fa-fire-gold"></i><i class="fas fa-fire"></i></div>
+                                <span>30 Days</span>
+                            </div>
+                            <div class="streak-item-mini" title="90 Day Streak"
+                                onclick="openBadgeModal('assets/certs/thm_90_day_streak.png')">
+                                <div class="streak-icon-fire"><i class="fas fa-fire"></i><i class="fas fa-bolt"></i></div>
+                                <span>90 Days</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic Badges Block -->
+                    <div class="drawer-block">
+                        <div class="drawer-block-label"><i class="fas fa-graduation-cap"></i> Skill &amp; Event Badges</div>
+                        <div class="streaks-container">
+                            <div class="streak-item-mini" title="Network Fundamentals"
+                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/network-fundamentals?sharerId=680791c75f48b4b336eb81f0')">
+                                <div class="streak-icon-topic"><i class="fas fa-network-wired"></i></div>
+                                <span>Network</span>
+                            </div>
+                            <div class="streak-item-mini" title="Pre-Security"
+                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/pre-security?sharerId=680791c75f48b4b336eb81f0')">
+                                <div class="streak-icon-topic"><i class="fas fa-shield-halved"></i></div>
+                                <span>Pre-Security</span>
+                            </div>
+                            <div class="streak-item-mini" title="Introduction to Cybersecurity"
+                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/intro-to-cyber-security?sharerId=680791c75f48b4b336eb81f0')">
+                                <div class="streak-icon-topic"><i class="fas fa-user-shield"></i></div>
+                                <span>Intro Cyber</span>
+                            </div>
+                            <div class="streak-item-mini" title="Advent of Cyber 2025"
+                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/advent-of-cyber-2025?sharerId=680791c75f48b4b336eb81f0')">
+                                <div class="streak-icon-topic"><i class="fas fa-tree"></i></div>
+                                <span>AoC 25</span>
+                            </div>
+                            <div class="streak-item-mini" title="World Wide Web"
+                                onclick="openBadgeModal('https://tryhackme.com/Vasu3/badges/world-wide-web?sharerId=680791c75f48b4b336eb81f0')">
+                                <div class="streak-icon-topic"><i class="fas fa-globe"></i></div>
+                                <span>Web</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Card Preview -->
+                    <div class="drawer-block">
+                        <div class="drawer-block-label"><i class="fas fa-award"></i> Event Certificate</div>
+                        <div class="thm-certificate-preview"
+                            onclick="openBadgeModal('assets/certs/thm_hacker_holidays_2026.png')"
+                            role="button" tabindex="0">
+                            <img src="assets/certs/thm_hacker_holidays_2026.png"
+                                alt="TryHackMe Hacker Holidays 2026 Certificate of Completion" />
+                            <div>
+                                <strong>Hacker Holidays 2026</strong>
+                                <span>Completed · 5 stars</span>
+                            </div>
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -772,13 +838,20 @@
                             <span class="agent-version">v1.2.0</span>
                         </div>
                         <h3>SOCGuard AI: Automated Threat Detection &amp; IR Platform</h3>
-                        <img src="assets/Investigation/one/Screenshot%202026-07-22%20190040.png" alt="SOCGuard AI Workflow" style="width: 100%; border-radius: 12px; margin: 15px 0; border: 1px solid rgba(0, 212, 255, 0.2); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);" />
-                        <p>Developed an automated SOC workflow that detects suspicious user inputs, generates security alerts, and forwards incidents to Splunk for analysis. The project uses FastAPI for attack detection, n8n for workflow automation, Gmail for email notifications, and Splunk Enterprise as the SIEM platform.</p>
+                        <img src="assets/Investigation/one/Screenshot%202026-07-22%20190040.png"
+                            alt="SOCGuard AI Workflow"
+                            style="width: 100%; border-radius: 12px; margin: 15px 0; border: 1px solid rgba(0, 212, 255, 0.2); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);" />
+                        <p>Developed an automated SOC workflow that detects suspicious user inputs, generates security
+                            alerts, and forwards incidents to Splunk for analysis. The project uses FastAPI for attack
+                            detection, n8n for workflow automation, Gmail for email notifications, and Splunk Enterprise
+                            as the SIEM platform.</p>
 
                         <div class="agent-capabilities">
                             <h4>Workflow:</h4>
-                            <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--cyan); line-height: 1.6; margin-top: 10px; padding: 12px; background: rgba(0, 212, 255, 0.05); border-radius: 8px; border: 1px solid rgba(0, 212, 255, 0.1);">
-                                Postman &rarr; n8n &rarr; FastAPI &rarr; Attack Detection &rarr; Alert Generation &rarr; Splunk &rarr; SOC Investigation
+                            <p
+                                style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--cyan); line-height: 1.6; margin-top: 10px; padding: 12px; background: rgba(0, 212, 255, 0.05); border-radius: 8px; border: 1px solid rgba(0, 212, 255, 0.1);">
+                                Postman &rarr; n8n &rarr; FastAPI &rarr; Attack Detection &rarr; Alert Generation &rarr;
+                                Splunk &rarr; SOC Investigation
                             </p>
                         </div>
 
@@ -790,8 +863,8 @@
                         </div>
 
                         <div class="agent-actions">
-                            <a href="https://drive.google.com/file/d/1x7PiB27z-hahkV2APfdw5UbSRuRPZsOL/view?usp=sharing" target="_blank" rel="noopener"
-                                class="liquid-btn sm primary">
+                            <a href="https://drive.google.com/file/d/1x7PiB27z-hahkV2APfdw5UbSRuRPZsOL/view?usp=sharing"
+                                target="_blank" rel="noopener" class="liquid-btn sm primary">
                                 <i class="fas fa-play-circle"></i> Video Demo
                             </a>
                         </div>
@@ -1374,6 +1447,29 @@
                         </button>
                     </div>
                     <div class="cert-ribbon foundational">Foundational</div>
+                </div>
+
+                <!-- TryHackMe Hacker Holidays 2026 -->
+                <div class="cert-card glass-card cert-featured" data-color="orange">
+                    <div class="cert-img-wrap" onclick="openBadgeModal('assets/certs/thm_hacker_holidays_2026.png')">
+                        <img src="assets/certs/thm_hacker_holidays_2026.png"
+                            alt="TryHackMe Hacker Holidays 2026 Certificate of Completion" />
+                        <div class="cert-overlay-icon"><i class="fas fa-eye"></i></div>
+                    </div>
+                    <div class="cert-content">
+                        <div class="cert-provider">TryHackMe</div>
+                        <h3>Hacker Holidays 2026</h3>
+                        <p>Completed the Byte Lotus summer challenge, rooted every room, and earned five stars.</p>
+                        <div class="cert-meta">
+                            <span><i class="fas fa-calendar"></i> Aug 2026</span>
+                            <span class="cert-verified"><i class="fas fa-circle-check"></i> Completed</span>
+                        </div>
+                        <button class="liquid-btn sm outline cert-view-btn"
+                            onclick="openBadgeModal('assets/certs/thm_hacker_holidays_2026.png')">
+                            <i class="fas fa-eye"></i> View Certificate
+                        </button>
+                    </div>
+                    <div class="cert-ribbon">5 Stars</div>
                 </div>
 
                 <!-- KC7 Foundation – Rap Beef Investigation -->

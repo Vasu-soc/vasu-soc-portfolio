@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="hiveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFC300"/>
+      <stop offset="100%" stop-color="#FF8C00"/>
+    </linearGradient>
+    <filter id="hiveGlow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <g filter="url(#hiveGlow)">
+    <polygon points="100,30 132,48 132,84 100,102 68,84 68,48" fill="rgba(255,195,0,0.25)" stroke="url(#hiveGrad)" stroke-width="5"/>
+    <polygon points="100,62 116,71 116,89 100,98 84,89 84,71" fill="rgba(255,140,0,0.4)" stroke="#FFC300" stroke-width="3"/>
+    <polygon points="100,98 132,116 132,152 100,170 68,152 68,116" fill="rgba(255,195,0,0.15)" stroke="url(#hiveGrad)" stroke-width="4"/>
+    <circle cx="100" cy="80" r="9" fill="#FFC300"/>
+  </g>
+  <text x="100" y="194" font-family="monospace" font-size="15" font-weight="bold" fill="#FFC300" text-anchor="middle">THE HIVE</text>
+</svg>

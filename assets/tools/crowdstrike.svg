@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="csGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FC3D21"/>
+      <stop offset="100%" stop-color="#FF7A00"/>
+    </linearGradient>
+    <filter id="csGlow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <g filter="url(#csGlow)">
+    <path d="M100 40 C60 40 35 75 35 100 L55 90 C55 90 60 65 100 65 Z" fill="url(#csGrad)" opacity="0.9"/>
+    <path d="M100 40 C140 40 165 75 165 100 L145 90 C145 90 140 65 100 65 Z" fill="url(#csGrad)" opacity="0.7"/>
+    <circle cx="100" cy="100" r="18" fill="#FC3D21"/>
+    <path d="M35 100 L100 160 L165 100" fill="none" stroke="url(#csGrad)" stroke-width="5" stroke-linejoin="round"/>
+  </g>
+  <text x="100" y="188" font-family="monospace" font-size="13" font-weight="bold" fill="#FC3D21" text-anchor="middle">CROWDSTRIKE</text>
+</svg>

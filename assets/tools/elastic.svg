@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="elasticGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F04E98"/>
+      <stop offset="50%" stop-color="#FEC514"/>
+      <stop offset="100%" stop-color="#00BFB3"/>
+    </linearGradient>
+    <filter id="elasticGlow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <g filter="url(#elasticGlow)">
+    <ellipse cx="100" cy="100" rx="60" ry="60" fill="none" stroke="url(#elasticGrad)" stroke-width="8"/>
+    <ellipse cx="100" cy="100" rx="35" ry="35" fill="rgba(0,191,179,0.25)"/>
+    <text x="100" y="111" font-family="Arial,sans-serif" font-size="40" font-weight="900" fill="url(#elasticGrad)" text-anchor="middle">e</text>
+  </g>
+  <text x="100" y="186" font-family="monospace" font-size="16" font-weight="bold" fill="#00BFB3" text-anchor="middle">ELASTIC SIEM</text>
+</svg>

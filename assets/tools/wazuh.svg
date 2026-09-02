@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="wazuhGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00A7B5"/>
+      <stop offset="100%" stop-color="#3DD9EB"/>
+    </linearGradient>
+    <filter id="wazuhGlow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <g filter="url(#wazuhGlow)">
+    <path d="M35 45 L60 145 L100 90 L140 145 L165 45" fill="none" stroke="url(#wazuhGrad)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="100" y="188" font-family="monospace" font-size="16" font-weight="bold" fill="#00A7B5" text-anchor="middle">WAZUH XDR</text>
+</svg>

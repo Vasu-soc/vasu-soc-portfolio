@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="sentinelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0078D4"/>
+      <stop offset="100%" stop-color="#00E5FF"/>
+    </linearGradient>
+    <filter id="sentinelGlow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <g filter="url(#sentinelGlow)">
+    <path d="M100 28 L158 55 C158 115 100 162 100 162 C100 162 42 115 42 55 Z" fill="rgba(0,120,212,0.25)" stroke="url(#sentinelGrad)" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="100" cy="95" r="16" fill="#0078D4" opacity="0.9"/>
+    <text x="100" y="101" font-family="monospace" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">M</text>
+  </g>
+  <text x="100" y="186" font-family="monospace" font-size="15" font-weight="bold" fill="#0078D4" text-anchor="middle">SENTINEL</text>
+</svg>

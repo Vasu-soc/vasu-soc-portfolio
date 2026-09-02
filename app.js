@@ -1802,6 +1802,31 @@ function closeBadgeModalOnOverlay(e) {
   }
 }
 
+// TryHackMe Drawer Expand/Collapse
+function toggleThmDetails() {
+  const drawer = document.getElementById('thmDetailsDrawer');
+  const btn = document.getElementById('thmExpandBtn');
+  if (!drawer) return;
+  
+  const isOpen = drawer.classList.contains('open');
+  if (isOpen) {
+    drawer.classList.remove('open');
+    if (btn) btn.classList.remove('active');
+  } else {
+    drawer.classList.add('open');
+    if (btn) btn.classList.add('active');
+    drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// Subtle ambient parallax for SIEM background tool icons
+window.addEventListener('mousemove', (e) => {
+  const siemLayer = document.getElementById('cyberBgSiemLayer');
+  if (!siemLayer) return;
+  const mx = (e.clientX / window.innerWidth - 0.5) * 20;
+  const my = (e.clientY / window.innerHeight - 0.5) * 20;
+  siemLayer.style.transform = `translate3d(${mx * 0.4}px, ${my * 0.4}px, 0)`;
+});
 
 console.log('%c🛡 SOC L1 Portfolio Loaded', 'color:#00d4ff;font-size:16px;font-weight:bold;');
 console.log('%cBuilt with premium Cyber Security Operations Center theme & security passion.', 'color:#bd00ff;font-size:12px;');
