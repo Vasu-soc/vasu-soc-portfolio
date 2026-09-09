@@ -26,20 +26,6 @@
     <div class="crt-scanlines"></div>
     <canvas id="cyberCanvas"></canvas>
 
-    <!-- Floating Background SIEM, SOAR, EDR, & Security Tool Logos -->
-    <div class="cyber-bg-siem-layer" id="cyberBgSiemLayer" style="position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;" aria-hidden="true">
-        <div class="bg-tool-item tool-splunk" style="top: 12%; left: 5%;"><img src="assets/tools/splunk.svg" alt="Splunk SIEM" /><span class="bg-tool-tag">SPLUNK // SIEM</span></div>
-        <div class="bg-tool-item tool-sentinel" style="top: 22%; right: 5%;"><img src="assets/tools/sentinel.svg" alt="Microsoft Sentinel" /><span class="bg-tool-tag">SENTINEL // SOAR</span></div>
-        <div class="bg-tool-item tool-cortex" style="top: 42%; left: 4%;"><img src="assets/tools/cortex.svg" alt="Cortex XSOAR" /><span class="bg-tool-tag">CORTEX // XSOAR</span></div>
-        <div class="bg-tool-item tool-qradar" style="top: 58%; right: 6%;"><img src="assets/tools/qradar.svg" alt="IBM QRadar" /><span class="bg-tool-tag">QRADAR // SIEM</span></div>
-        <div class="bg-tool-item tool-crowdstrike" style="top: 74%; left: 7%;"><img src="assets/tools/crowdstrike.svg" alt="CrowdStrike Falcon" /><span class="bg-tool-tag">CROWDSTRIKE // EDR</span></div>
-        <div class="bg-tool-item tool-elastic" style="top: 14%; left: 82%;"><img src="assets/tools/elastic.svg" alt="Elastic SIEM" /><span class="bg-tool-tag">ELASTIC // SIEM</span></div>
-        <div class="bg-tool-item tool-wireshark" style="top: 38%; right: 3%;"><img src="assets/tools/wireshark.svg" alt="Wireshark" /><span class="bg-tool-tag">WIRESHARK // PCAP</span></div>
-        <div class="bg-tool-item tool-thehive" style="top: 86%; right: 12%;"><img src="assets/tools/thehive.svg" alt="TheHive SIRP" /><span class="bg-tool-tag">THEHIVE // SOAR</span></div>
-        <div class="bg-tool-item tool-wazuh" style="top: 52%; left: 88%;"><img src="assets/tools/wazuh.svg" alt="Wazuh XDR" /><span class="bg-tool-tag">WAZUH // XDR</span></div>
-        <div class="bg-tool-item tool-zeek" style="top: 92%; left: 4%;"><img src="assets/tools/zeek.svg" alt="Zeek NIDS" /><span class="bg-tool-tag">ZEEK // NIDS</span></div>
-    </div>
-
     <div class="nav-menu-backdrop" id="navBackdrop"></div>
 
     <!-- ========== NAV ========== -->
@@ -97,6 +83,23 @@
 
     <!-- ========== HERO ========== -->
     <section id="hero" class="hero-section">
+        <!-- Floating SIEM, SOAR, EDR, & Security Tool Logos (Scoped exclusively to Hero) -->
+        <div class="cyber-bg-siem-layer" id="cyberBgSiemLayer" style="position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;" aria-hidden="true">
+            <!-- Left Side Tools -->
+            <div class="bg-tool-item tool-splunk" style="top: 14%; left: 5%;"><img src="assets/tools/splunk.svg" alt="Splunk SIEM" /><span class="bg-tool-tag">SPLUNK // SIEM</span></div>
+            <div class="bg-tool-item tool-wireshark" style="top: 28%; left: 14%;"><img src="assets/tools/wireshark.svg" alt="Wireshark" /><span class="bg-tool-tag">WIRESHARK // PCAP</span></div>
+            <div class="bg-tool-item tool-cortex" style="top: 48%; left: 4%;"><img src="assets/tools/cortex.svg" alt="Cortex XSOAR" /><span class="bg-tool-tag">CORTEX // XSOAR</span></div>
+            <div class="bg-tool-item tool-crowdstrike" style="top: 72%; left: 6%;"><img src="assets/tools/crowdstrike.svg" alt="CrowdStrike Falcon" /><span class="bg-tool-tag">CROWDSTRIKE // EDR</span></div>
+            <div class="bg-tool-item tool-zeek" style="top: 90%; left: 14%;"><img src="assets/tools/zeek.svg" alt="Zeek NIDS" /><span class="bg-tool-tag">ZEEK // NIDS</span></div>
+
+            <!-- Right Side Tools (Well-spaced & separated) -->
+            <div class="bg-tool-item tool-elastic" style="top: 10%; right: 7%;"><img src="assets/tools/elastic.svg" alt="Elastic SIEM" /><span class="bg-tool-tag">ELASTIC // SIEM</span></div>
+            <div class="bg-tool-item tool-sentinel" style="top: 32%; right: 8%;"><img src="assets/tools/sentinel.svg" alt="Microsoft Sentinel" /><span class="bg-tool-tag">SENTINEL // SOAR</span></div>
+            <div class="bg-tool-item tool-wazuh" style="top: 54%; right: 6%;"><img src="assets/tools/wazuh.svg" alt="Wazuh XDR" /><span class="bg-tool-tag">WAZUH // XDR</span></div>
+            <div class="bg-tool-item tool-qradar" style="top: 74%; right: 8%;"><img src="assets/tools/qradar.svg" alt="IBM QRadar" /><span class="bg-tool-tag">QRADAR // SIEM</span></div>
+            <div class="bg-tool-item tool-thehive" style="top: 90%; right: 18%;"><img src="assets/tools/thehive.svg" alt="TheHive SIRP" /><span class="bg-tool-tag">THEHIVE // SOAR</span></div>
+        </div>
+
         <div class="hero-bg-orbs">
             <div class="orb orb-1"></div>
             <div class="orb orb-2"></div>
@@ -105,11 +108,6 @@
         </div>
 
         <div class="hero-content">
-            <div class="hero-badge liquid-badge">
-                <span class="pulse-dot"></span>
-                <span>Available for SOC Roles</span>
-            </div>
-
             <div class="tac-ops-dashboard">
                 <div class="ops-status">
                     <span class="status-indicator"></span>
@@ -200,87 +198,164 @@
     <section id="about" class="section about-section">
         <div class="container">
             <div class="section-header left-align">
-                <div class="section-tag">01 / About Me</div>
-                <h2 class="section-title">Who Am <span class="gradient-text">I?</span></h2>
+                <div class="section-tag">01 / Tactical Dossier</div>
+                <h2 class="section-title">Analyst <span class="gradient-text">Profile</span></h2>
+                <p class="section-sub">Operational security intelligence, core competencies, and career objective</p>
             </div>
 
             <div class="about-grid">
+                <!-- Left: Biometric Dossier ID Card -->
                 <div class="about-avatar-wrap">
-                    <div class="avatar-bubble-ring">
-                        <div class="avatar-img">
-                            <img src="assets/profile.jpg" alt="IMMARAJU VASU"
-                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+                    <div class="analyst-dossier-card glass-card">
+                        <div class="dossier-header-bar">
+                            <span class="dossier-chip"><i class="fas fa-fingerprint"></i> BIO-ID // 955386</span>
+                            <span class="dossier-status-live"><span class="pulse-dot"></span> OPERATIONAL</span>
                         </div>
-                        <div class="orbit-ring ring-1">
-                            <div class="orbit-dot od-1"><i class="fas fa-shield-halved"></i></div>
-                        </div>
-                        <div class="orbit-ring ring-2">
-                            <div class="orbit-dot od-2"><i class="fas fa-lock"></i></div>
-                        </div>
-                        <div class="orbit-ring ring-3">
-                            <div class="orbit-dot od-3"><i class="fas fa-magnifying-glass-chart"></i></div>
-                        </div>
-                    </div>
 
-                    <div class="about-quick-info">
-                        <div class="qi-item">
-                            <i class="fas fa-map-pin"></i>
-                            <span>India 🇮🇳</span>
+                        <div class="avatar-bubble-ring">
+                            <div class="avatar-img">
+                                <img src="assets/profile.jpg" alt="IMMARAJU VASU" />
+                            </div>
+                            <div class="orbit-ring ring-1">
+                                <div class="orbit-dot od-1"><i class="fas fa-shield-halved"></i></div>
+                            </div>
+                            <div class="orbit-ring ring-2">
+                                <div class="orbit-dot od-2"><i class="fas fa-lock"></i></div>
+                            </div>
+                            <div class="orbit-ring ring-3">
+                                <div class="orbit-dot od-3"><i class="fas fa-magnifying-glass-chart"></i></div>
+                            </div>
                         </div>
-                        <div class="qi-item">
-                            <i class="fas fa-graduation-cap"></i>
-                            <span>B.Tech Cyber Security</span>
+
+                        <div class="analyst-identity">
+                            <h3 class="analyst-name">IMMARAJU VASU</h3>
+                            <div class="analyst-badge-pill">
+                                <i class="fas fa-shield-virus"></i> SOC ANALYST // TIER 1
+                            </div>
                         </div>
-                        <div class="qi-item">
-                            <i class="fas fa-phone"></i>
-                            <span>+91 9553866278</span>
+
+                        <!-- Biometric Competency Bars -->
+                        <div class="dossier-competencies">
+                            <div class="dossier-skill-item">
+                                <div class="skill-meta">
+                                    <span><i class="fas fa-satellite-dish"></i> Threat Detection & Triage</span>
+                                    <span class="skill-val">92%</span>
+                                </div>
+                                <div class="skill-track"><div class="skill-fill" style="width: 92%;"></div></div>
+                            </div>
+                            <div class="dossier-skill-item">
+                                <div class="skill-meta">
+                                    <span><i class="fas fa-terminal"></i> SIEM & SPL Log Forensics</span>
+                                    <span class="skill-val">90%</span>
+                                </div>
+                                <div class="skill-track"><div class="skill-fill" style="width: 90%;"></div></div>
+                            </div>
+                            <div class="dossier-skill-item">
+                                <div class="skill-meta">
+                                    <span><i class="fas fa-fire-extinguisher"></i> Incident Response & Containment</span>
+                                    <span class="skill-val">88%</span>
+                                </div>
+                                <div class="skill-track"><div class="skill-fill" style="width: 88%;"></div></div>
+                            </div>
+                            <div class="dossier-skill-item">
+                                <div class="skill-meta">
+                                    <span><i class="fas fa-network-wired"></i> Packet & Traffic Analysis</span>
+                                    <span class="skill-val">85%</span>
+                                </div>
+                                <div class="skill-track"><div class="skill-fill" style="width: 85%;"></div></div>
+                            </div>
                         </div>
-                        <div class="qi-item">
-                            <i class="fas fa-briefcase"></i>
-                            <span>Open to Opportunities</span>
-                        </div>
-                        <div class="qi-item">
-                            <i class="fas fa-language"></i>
-                            <span>English / Telugu / Hindi</span>
+
+                        <!-- Tactical Metadata Tags -->
+                        <div class="about-quick-info">
+                            <div class="qi-item">
+                                <i class="fas fa-map-pin"></i>
+                                <span>India 🇮🇳</span>
+                            </div>
+                            <div class="qi-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>B.Tech Cyber Security</span>
+                            </div>
+                            <div class="qi-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 9553866278</span>
+                            </div>
+                            <div class="qi-item">
+                                <i class="fas fa-language"></i>
+                                <span>Eng / Tel / Hin</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Right: Executive Intel & Operational Pillars -->
                 <div class="about-text-wrap">
-                    <p class="about-lead">
-                        I am an <strong>aspiring SOC Analyst (L1)</strong> with a strong focus on threat detection, log
-                        analysis, and incident response.
-                    </p>
-                    <p>
-                        I have built a solid foundation in cybersecurity through hands-on practice and continuous
-                        learning, with experience in monitoring security events and identifying suspicious activities
-                        across systems.
-                    </p>
-                    <p>
-                        I have worked on practical labs and platforms like TryHackMe, where I developed skills in
-                        analyzing logs, understanding attack patterns, and investigating alerts. My knowledge includes
-                        working with Linux systems, authentication logs, and recognizing common threats such as
-                        brute-force attacks, phishing attempts, and unauthorized access.
-                    </p>
-                    <p>
-                        I have also developed projects related to log generation and monitoring, which helped me
-                        understand how real-world SOC environments detect and respond to security incidents.
-                    </p>
-
-
-                    <div class="goal-highlight"
-                        style="background:rgba(0,212,255,0.06); border:1px solid rgba(0,212,255,0.15); padding:16px 20px; border-radius:12px; margin-bottom:24px;">
-                        <h4 style="color:var(--cyan); margin-bottom:8px; font-size:0.9rem; text-transform:uppercase;">
-                            Goal:</h4>
-                        <p style="font-size:0.92rem; margin:0;">To start my career as a SOC Analyst (L1) and contribute
-                            to strengthening security operations while continuously improving my skills in
-                            cybersecurity.</p>
+                    <div class="intel-briefing-header">
+                        <div class="intel-tag"><i class="fas fa-file-shield"></i> EXECUTIVE INTELLIGENCE BRIEF</div>
+                        <p class="about-lead">
+                            Security Operations Center (SOC) Level 1 Analyst specializing in <strong>real-time alert triage, multi-source log forensics, and proactive threat containment</strong> across enterprise ecosystems.
+                        </p>
                     </div>
 
-                    <div class="about-cta">
+                    <!-- 4 Operational Pillars -->
+                    <div class="ops-pillars-grid">
+                        <div class="ops-pillar-card glass-card">
+                            <div class="pillar-icon-box cyan-box">
+                                <i class="fas fa-binoculars"></i>
+                            </div>
+                            <div class="pillar-content">
+                                <h4>24/7 Threat Monitoring</h4>
+                                <p>Continuous telemetry surveillance, alert prioritization, and aggressive false-positive reduction to ensure zero-lag escalation.</p>
+                            </div>
+                        </div>
+
+                        <div class="ops-pillar-card glass-card">
+                            <div class="pillar-icon-box purple-box">
+                                <i class="fas fa-magnifying-glass-chart"></i>
+                            </div>
+                            <div class="pillar-content">
+                                <h4>SIEM & Log Correlation</h4>
+                                <p>Deep-dive SPL and KQL query investigation across authentication events, Sysmon telemetry, and firewall drop streams.</p>
+                            </div>
+                        </div>
+
+                        <div class="ops-pillar-card glass-card">
+                            <div class="pillar-icon-box orange-box">
+                                <i class="fas fa-shield-halved"></i>
+                            </div>
+                            <div class="pillar-content">
+                                <h4>Incident Containment</h4>
+                                <p>Actionable quarantine workflows, host isolation protocols, and MITRE ATT&amp;CK framework mapping to neutralize adversary pivots.</p>
+                            </div>
+                        </div>
+
+                        <div class="ops-pillar-card glass-card">
+                            <div class="pillar-icon-box green-box">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="pillar-content">
+                                <h4>SOC Automation & SOAR</h4>
+                                <p>Crafting automated detection pipelines with FastAPI, n8n webhook triggers, and Python scripts to streamline MTTR.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tactical Mission Objective HUD -->
+                    <div class="goal-highlight">
+                        <div class="goal-header">
+                            <span class="status-indicator"></span>
+                            <h4>CURRENT MISSION OBJECTIVE</h4>
+                        </div>
+                        <p>To join a forward-leaning Security Operations Center as an L1 SOC Analyst, defending enterprise assets with relentless vigilance, precise incident documentation, and continuous blue-team refinement.</p>
+                    </div>
+
+                    <div class="about-cta-hub">
                         <button class="liquid-btn primary sm" onclick="scrollSection('contact')">
-                            <i class="fas fa-paper-plane"></i> Let's Connect
+                            <i class="fas fa-paper-plane"></i> Initiate Transmission
                         </button>
+                        <a href="assets/certs/Vasu-soc-analyst.pdf" target="_blank" rel="noopener" class="liquid-btn sm outline">
+                            <i class="fas fa-file-pdf"></i> Security Dossier / Resume
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1253,88 +1328,140 @@
     <section id="timeline" class="section timeline-section">
         <div class="container">
             <div class="section-header">
-                <div class="section-tag">05 / Journey</div>
-                <h2 class="section-title">My <span class="gradient-text">Timeline</span></h2>
+                <div class="section-tag">05 / Tactical Operations Log</div>
+                <h2 class="section-title">Mission <span class="gradient-text">Timeline</span></h2>
+                <p class="section-sub">Chronological operations, red-team/blue-team milestones, and career trajectory</p>
             </div>
 
-            <div class="timeline-wrap">
+            <!-- Interactive Mission Scrubber / Filter -->
+            <div class="timeline-scrubber" id="timelineScrubber">
+                <button class="scrubber-pill active" onclick="filterTimeline('all', this)">
+                    <i class="fas fa-layer-group"></i> All Operations
+                </button>
+                <button class="scrubber-pill" onclick="filterTimeline('present', this)">
+                    <span class="scrubber-dot pulse"></span> Present: SIEMXPERT
+                </button>
+                <button class="scrubber-pill" onclick="filterTimeline('2026', this)">
+                    <i class="fas fa-calendar-check"></i> 2026: SOC Discipline
+                </button>
+                <button class="scrubber-pill" onclick="filterTimeline('2025', this)">
+                    <i class="fas fa-trophy"></i> 2025: Hackathon Win
+                </button>
+                <button class="scrubber-pill" onclick="filterTimeline('2024', this)">
+                    <i class="fas fa-seedling"></i> 2024: The Genesis
+                </button>
+            </div>
 
-                <div class="timeline-item tl-left" data-year="Present">
+            <div class="timeline-wrap" id="timelineList">
+
+                <!-- Present (Ongoing) -->
+                <div class="timeline-item tl-left" data-phase="present" data-year="Present">
                     <div class="timeline-bubble">
-                        <div class="tl-icon-bubble">
-                            <i class="fas fa-user-shield"></i>
+                        <div class="tl-icon-bubble active-beacon">
+                            <i class="fas fa-shield-virus"></i>
+                            <span class="beacon-wave"></span>
                         </div>
-                        <div class="tl-content glass-card">
+                        <div class="tl-content glass-card mission-card">
+                            <div class="mission-top-bar">
+                                <span class="mission-code"><i class="fas fa-terminal"></i> OP://SIEMXPERT-ADVANCED</span>
+                                <span class="mission-status-pill ongoing"><span class="pulse-dot"></span> LIVE MISSION</span>
+                            </div>
                             <div class="tl-year">Present (Ongoing)</div>
-                            <h3>SIEMXPERT – SOC Analyst Training Journey</h3>
-                            <p>Currently undergoing SOC Analyst training at SIEMXPERT, building practical skills in
-                                Security Operations Center (SOC) workflows, SIEM fundamentals, log analysis, threat
-                                detection, and incident investigation. Continuously gaining hands-on experience with
-                                real-world security scenarios and strengthening core blue team and cybersecurity
-                                analysis skills.</p>
+                            <h3>SIEMXPERT – SOC Analyst Professional Training</h3>
+                            <p>Undergoing intensive Tier-1 & Tier-2 SOC Analyst training at SIEMXPERT, focusing on hands-on SIEM ingestion, real-time alert triage, alert rule tuning, and mock enterprise incident investigations. Building muscle memory for blue-team security operations under industry-standard methodologies.</p>
+                            
+                            <div class="mission-metrics-grid">
+                                <div class="mm-item"><span class="mm-num">SOC L1/L2</span><span class="mm-label">Curriculum</span></div>
+                                <div class="mm-item"><span class="mm-num">Live Logs</span><span class="mm-label">Lab Ingestion</span></div>
+                                <div class="mm-item"><span class="mm-num">Enterprise</span><span class="mm-label">Workflows</span></div>
+                            </div>
+
                             <div class="tl-tags">
-                                <span>SIEMXPERT</span><span>SOC Training</span><span>SIEM</span><span>Threat
-                                    Detection</span><span>Blue Team</span>
+                                <span>SIEMXPERT</span><span>SIEM Operations</span><span>Log Forensics</span><span>Threat Triage</span><span>Incident Escalation</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="timeline-item tl-right" data-year="2026">
+                <!-- 2026 -->
+                <div class="timeline-item tl-right" data-phase="2026" data-year="2026">
                     <div class="timeline-bubble">
                         <div class="tl-icon-bubble">
-                            <i class="fas fa-microscope"></i>
+                            <i class="fas fa-crosshairs"></i>
                         </div>
-                        <div class="tl-content glass-card">
+                        <div class="tl-content glass-card mission-card">
+                            <div class="mission-top-bar">
+                                <span class="mission-code"><i class="fas fa-terminal"></i> OP://SOC-DISCIPLINE</span>
+                                <span class="mission-status-pill completed"><i class="fas fa-check-circle"></i> CONTINUOUS OPS</span>
+                            </div>
                             <div class="tl-year">2026</div>
-                            <h3>SOC Analyst Path & Consistent Self-Learning</h3>
-                            <p>Committed to becoming a SOC Analyst by following a disciplined, daily self-learning
-                                routine. Actively shared learning progress and insights on LinkedIn. Built multiple
-                                hands-on mini projects, including log analysis and SOC simulation work, to strengthen
-                                practical skills.</p>
+                            <h3>SOC Analyst Path & Dedicated Hands-On Mastery</h3>
+                            <p>Executed a daily, disciplined cyber routine: investigated alerts, solved TryHackMe and KC7 threat scenarios, and built end-to-end detection projects. Actively shared investigative case studies on LinkedIn, creating automated alert pipelines with FastAPI, n8n, and Splunk.</p>
+                            
+                            <div class="mission-metrics-grid">
+                                <div class="mm-item"><span class="mm-num">270+</span><span class="mm-label">Day Streak</span></div>
+                                <div class="mm-item"><span class="mm-num">Top 1%</span><span class="mm-label">TryHackMe</span></div>
+                                <div class="mm-item"><span class="mm-num">3+</span><span class="mm-label">IR Projects</span></div>
+                            </div>
+
                             <div class="tl-tags">
-                                <span>SOC
-                                    Analyst</span><span>Self-Learning</span><span>Projects</span><span>LinkedIn</span><span>Consistency</span>
+                                <span>SOC Analyst</span><span>Splunk</span><span>FastAPI</span><span>n8n SOAR</span><span>Daily Discipline</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="timeline-item tl-left" data-year="2025">
+                <!-- 2025 -->
+                <div class="timeline-item tl-left" data-phase="2025" data-year="2025">
                     <div class="timeline-bubble">
-                        <div class="tl-icon-bubble">
+                        <div class="tl-icon-bubble trophy-beacon">
                             <i class="fas fa-trophy"></i>
                         </div>
-                        <div class="tl-content glass-card">
+                        <div class="tl-content glass-card mission-card featured-mission">
+                            <div class="mission-top-bar">
+                                <span class="mission-code"><i class="fas fa-terminal"></i> OP://MALWARE-HACKATHON</span>
+                                <span class="mission-status-pill victory"><i class="fas fa-award"></i> 2ND PLACE WINNER</span>
+                            </div>
                             <div class="tl-year">2025</div>
-                            <h3>Ethical Hacking & Cybersecurity Course + Hackathon Achievement</h3>
-                            <p>Enrolled in a 6-month Ethical Hacking and Cybersecurity course at SkillsUprise
-                                (July–December). Successfully completed the program with hands-on training in security
-                                concepts and practical techniques. Participated in a malware-focused hackathon conducted
-                                during the course and secured 2nd place, earning a cash prize of ₹3000.</p>
+                            <h3>Ethical Hacking Course + Hackathon Victory (₹3000 Prize)</h3>
+                            <p>Completed a 6-month hands-on Ethical Hacking and Cyber Defense program at SkillsUprise (July–December). Competed in a high-stakes malware investigation hackathon against fellow security students, securing <strong>2nd Place</strong> with a ₹3,000 cash prize for rapid incident triage and threat identification.</p>
+                            
+                            <div class="mission-metrics-grid">
+                                <div class="mm-item"><span class="mm-num">6 Months</span><span class="mm-label">Hands-on Program</span></div>
+                                <div class="mm-item"><span class="mm-num">2nd Place</span><span class="mm-label">Hackathon Win</span></div>
+                                <div class="mm-item"><span class="mm-num">₹3,000</span><span class="mm-label">Cash Bounty</span></div>
+                            </div>
+
                             <div class="tl-tags">
-                                <span>Ethical
-                                    Hacking</span><span>Cybersecurity</span><span>Hackathon</span><span>Malware</span><span>SkillsUprise</span>
+                                <span>Malware Triage</span><span>Hackathon</span><span>SkillsUprise</span><span>Penetration Testing</span><span>Network Security</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="timeline-item tl-right" data-year="2024">
+                <!-- 2024 -->
+                <div class="timeline-item tl-right" data-phase="2024" data-year="2024">
                     <div class="timeline-bubble">
                         <div class="tl-icon-bubble">
-                            <i class="fas fa-rocket"></i>
+                            <i class="fas fa-satellite"></i>
                         </div>
-                        <div class="tl-content glass-card">
+                        <div class="tl-content glass-card mission-card">
+                            <div class="mission-top-bar">
+                                <span class="mission-code"><i class="fas fa-terminal"></i> OP://CYBER-GENESIS</span>
+                                <span class="mission-status-pill initialized"><i class="fas fa-compass"></i> FOUNDATION SET</span>
+                            </div>
                             <div class="tl-year">2024</div>
-                            <h3>Cybersecurity Journey Began</h3>
-                            <p>Started exploring cybersecurity by understanding how it works in the real world.
-                                Researched core concepts such as threats, vulnerabilities, attacks, and how data flows
-                                across systems and networks. Built a strong base by learning how security applies to
-                                real-world environments.</p>
+                            <h3>The Initiation: Deep-Diving Into Security Architecture</h3>
+                            <p>Embarked on the cybersecurity journey by deconstructing how modern enterprise defense works. Studied packet flow architectures, TCP/IP fundamentals, Linux system administration, Common Vulnerabilities and Exposures (CVEs), and attack lifecycle phases.</p>
+                            
+                            <div class="mission-metrics-grid">
+                                <div class="mm-item"><span class="mm-num">TCP/IP</span><span class="mm-label">Networking Core</span></div>
+                                <div class="mm-item"><span class="mm-num">Linux CLI</span><span class="mm-label">System Admin</span></div>
+                                <div class="mm-item"><span class="mm-num">MITRE</span><span class="mm-label">Attack Concepts</span></div>
+                            </div>
+
                             <div class="tl-tags">
-                                <span>Research</span><span>Fundamentals</span><span>Networking
-                                    Basics</span><span>Security Concepts</span>
+                                <span>Security Fundamentals</span><span>Networking</span><span>Linux Internals</span><span>Threat Vectors</span>
                             </div>
                         </div>
                     </div>

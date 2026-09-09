@@ -1828,6 +1828,27 @@ window.addEventListener('mousemove', (e) => {
   siemLayer.style.transform = `translate3d(${mx * 0.4}px, ${my * 0.4}px, 0)`;
 });
 
+// Interactive SOC Mission Timeline Filter / Scrubber
+function filterTimeline(phase, btn) {
+  const pills = document.querySelectorAll('.timeline-scrubber .scrubber-pill');
+  pills.forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const items = document.querySelectorAll('#timelineList .timeline-item');
+  items.forEach(item => {
+    const itemPhase = item.getAttribute('data-phase');
+    item.classList.remove('highlight-mission');
+    if (phase === 'all' || itemPhase === phase) {
+      item.classList.remove('fade-out');
+      if (phase !== 'all') {
+        item.classList.add('highlight-mission');
+      }
+    } else {
+      item.classList.add('fade-out');
+    }
+  });
+}
+
 console.log('%c🛡 SOC L1 Portfolio Loaded', 'color:#00d4ff;font-size:16px;font-weight:bold;');
 console.log('%cBuilt with premium Cyber Security Operations Center theme & security passion.', 'color:#bd00ff;font-size:12px;');
 console.log('%c💡 Tip: Press Alt+T to toggle Light/Dark theme', 'color:#bd00ff;font-size:11px;');

@@ -5606,7 +5606,7 @@ body.matrix-mode .crt-scanlines {
 
 /* ── BACKGROUND SIEM & SOAR TOOLS WATERMARK LAYER (CORE FALLBACK) ── */
 .cyber-bg-siem-layer {
-    position: fixed;
+    position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 1;
@@ -5619,7 +5619,7 @@ body.matrix-mode .crt-scanlines {
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    opacity: 0.6;
+    opacity: 0.30;
     pointer-events: none;
 }
 
