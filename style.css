@@ -5602,4 +5602,141 @@ body.matrix-mode .cyber-grid-overlay {
 }
 body.matrix-mode .crt-scanlines {
     opacity: 0.7;
-}
+}
+
+/* ── BACKGROUND SIEM & SOAR TOOLS WATERMARK LAYER (CORE FALLBACK) ── */
+.cyber-bg-siem-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.bg-tool-item {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.bg-tool-item img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.bg-tool-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--cyan, #00e5ff);
+    letter-spacing: 1px;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* ── TRYHACKME BADGES DRAWER (CORE FALLBACK) ── */
+.thm-details-drawer {
+    margin-top: 24px;
+    padding: 28px;
+    border-radius: var(--radius-lg, 20px);
+    background: rgba(8, 18, 38, 0.85);
+    border: 1px solid rgba(255, 62, 62, 0.25);
+    display: none;
+    box-sizing: border-box;
+}
+
+.thm-details-drawer.open {
+    display: block;
+}
+
+.drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.drawer-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.drawer-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-secondary, #94a3b8);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast, 0.2s ease);
+}
+
+.drawer-close-btn:hover {
+    background: rgba(255, 62, 62, 0.2);
+    color: #ff6b6b;
+    border-color: rgba(255, 62, 62, 0.4);
+}
+
+.drawer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr 1.15fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.drawer-block {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.drawer-block-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted, #64748b);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 1024px) {
+    .drawer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .drawer-block:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 640px) {
+    .drawer-grid {
+        grid-template-columns: 1fr;
+    }
+    .drawer-block:last-child {
+        grid-column: span 1;
+    }
+}

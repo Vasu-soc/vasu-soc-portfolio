@@ -718,8 +718,73 @@ body {
 
 .drawer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr 1.25fr 1.15fr;
   gap: 20px;
+  align-items: stretch;
+}
+
+.drawer-block {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.drawer-block:hover {
+  border-color: rgba(255, 62, 62, 0.25);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.drawer-block .streaks-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  overflow: visible;
+}
+
+.drawer-block .streak-item-mini {
+  flex: 1 1 65px;
+  max-width: 90px;
+}
+
+.drawer-block .thm-certificate-preview {
+  margin-top: 0;
+  height: calc(100% - 30px);
+  min-height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 120, 0, 0.25);
+}
+
+@media (max-width: 1024px) {
+  .drawer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .drawer-block:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .drawer-grid {
+    grid-template-columns: 1fr;
+  }
+  .drawer-block:last-child {
+    grid-column: span 1;
+  }
+  .drawer-block .streak-item-mini {
+    flex: 1 1 55px;
+    padding: 6px 8px;
+  }
 }
 
 .drawer-block-label {
@@ -2298,7 +2363,7 @@ body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
   will-change: transform;
 }
@@ -2309,13 +2374,14 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 7px;
-  opacity: 0.7;
+  opacity: 0.55;
   filter:
-    drop-shadow(0 0 12px currentColor)
-    drop-shadow(0 0 28px rgba(0, 229, 255, 0.6))
-    brightness(1.6);
+    drop-shadow(0 0 10px currentColor)
+    drop-shadow(0 0 24px rgba(0, 229, 255, 0.4))
+    brightness(1.4);
   animation: floatTool 12s ease-in-out infinite alternate;
   transition: opacity 0.5s ease;
+  pointer-events: none;
 }
 
 .bg-tool-item img {

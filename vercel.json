@@ -14,11 +14,15 @@
       "use": "@vercel/static"
     },
     {
+      "src": "enhancements.css",
+      "use": "@vercel/static"
+    },
+    {
       "src": "app.js",
       "use": "@vercel/static"
     },
     {
-      "src": "assets/**/*",
+      "src": "assets/**",
       "use": "@vercel/static"
     }
   ],
